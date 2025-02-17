@@ -49,9 +49,16 @@ const Vehicles = () => {
       });
   }, [vehicles, searchTerm, brandFilter, conditionFilter, priceSort]);
 
-  const handleAddVehicle = async (formData) => {
+  const handleAddVehicle = async (formData: VehicleData) => {
     try {
-      await createVehicleMutation.mutateAsync(formData);
+      const { id, ...vehicleDataWithoutId } = formData;
+
+      await createVehicleMutation.mutateAsync({
+        ...vehicleDataWithoutId,
+        available: true,
+        addedAt: new Date().toISOString(),
+      } as VehicleData);
+
       setIsAddModalOpen(false);
       refetch();
     } catch (error) {
