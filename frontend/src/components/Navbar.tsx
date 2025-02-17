@@ -6,9 +6,11 @@ const Navbar = () => {
       <div className="w-[75%] mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-800">
-              Garage la Phocéenne
-            </h1>
+            <a href="/">
+              <h2 className="text-xl font-bold text-gray-800">
+                Garage la Phocéenne
+              </h2>
+            </a>
           </div>
 
           <div className="flex-1 max-w-lg mx-4">
@@ -41,7 +43,7 @@ const Navbar = () => {
             <a href="/clients" className="text-gray-600 hover:text-gray-800">
               Clients
             </a>
-            <a href="/vehicules" className="text-gray-600 hover:text-gray-800">
+            <a href="/vehicles" className="text-gray-600 hover:text-gray-800">
               Véhicules
             </a>
           </div>

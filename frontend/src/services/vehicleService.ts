@@ -14,7 +14,7 @@ export const VehicleService = {
   createVehicle: async (vehicle: VehicleData): Promise<VehicleData> => {
     return apiClient<VehicleData>('/vehicle', {
       method: 'POST',
-      body: JSON.stringify(vehicle),
+      body: vehicle,
     });
   },
 
@@ -22,9 +22,19 @@ export const VehicleService = {
     id: string,
     vehicle: VehicleData,
   ): Promise<VehicleData> => {
+    const formattedVehicle = {
+      ...vehicle,
+      mileage: parseInt(vehicle.mileage.toString().replace(/\s/g, '')),
+    };
+
+    console.log('Données formatées:', {
+      original: vehicle.mileage,
+      formatted: formattedVehicle.mileage,
+    });
+
     return apiClient<VehicleData>(`/vehicle/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(vehicle),
+      method: 'PATCH',
+      body: formattedVehicle,
     });
   },
 
@@ -67,13 +77,19 @@ export const fetchVehicle = (id: string) => {
 
 export const createVehicle = () => {
   return useMutation<VehicleData, Error, VehicleData>({
-    mutationFn: VehicleService.createVehicle,
+    mutationFn: (data: VehicleData) =>
+      VehicleService.createVehicle({
+        ...data,
+        available: true,
+        addedAt: new Date().toISOString(),
+      }),
   });
 };
 
 export const updateVehicle = () => {
-  return useMutation<VehicleData, Error, { id: string; vehicle: VehicleData }>({
-    mutationFn: ({ id, vehicle }) => VehicleService.updateVehicle(id, vehicle),
+  return useMutation<VehicleData, Error, VehicleData>({
+    mutationFn: (data: VehicleData) =>
+      VehicleService.updateVehicle(data.id, data),
   });
 };
 

@@ -7,7 +7,10 @@ type RequestOptions = {
   credentials?: RequestCredentials;
 };
 
-export const apiClient = async<T>(endpoint: string, options: RequestOptions = {}): Promise<T> => {
+export const apiClient = async <T>(
+  endpoint: string,
+  options: RequestOptions = {},
+): Promise<T> => {
   const { method = 'GET', headers, body, credentials } = options;
 
   try {
@@ -23,11 +26,14 @@ export const apiClient = async<T>(endpoint: string, options: RequestOptions = {}
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || `Error: ${response.status}`);
+      const errorData = await response.json().catch(() => null);
+      throw new Error(
+        errorData?.message ||
+          `Erreur ${response.status}: ${response.statusText} pour ${method} ${endpoint}`,
+      );
     }
 
-    return await response.json() as T;
+    return (await response.json()) as T;
   } catch (error) {
     console.error('Request failed:', error);
     throw error;

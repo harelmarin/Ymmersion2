@@ -89,7 +89,7 @@ const Home = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl text-gray-600">Véhicules récents</h3>
                   <a
-                    href="/vehicules"
+                    href="/vehicles"
                     className="text-sm text-blue-600 hover:text-blue-800"
                   >
                     Voir tout

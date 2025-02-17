@@ -1,3 +1,5 @@
+export type Condition = 'new' | 'used';
+
 export type VehicleData = {
   id: string;
   brand: string;
@@ -9,4 +11,3 @@ export type VehicleData = {
   available: boolean;
   addedAt: string;
 };
-export type Condition = 'new' | 'used' | 'damaged';
