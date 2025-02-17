@@ -14,19 +14,16 @@ model User {
   phone        String?  
   address      String?  
   password     String?  
-  role         Role     @default(client)
+  role         Role     @default(employee)
   active       Boolean  @default(true) 
   deleted      Boolean  @default(false)
   createdAt    DateTime @default(now())
-
-  transactions Transactions[] @relation("TransactionsClient")
   sales        Transactions[] @relation("TransactionsEmployee")
 
   logs         Logs[]
 }
 
 enum Role {
-  client
   employee
   admin
 }
@@ -59,7 +56,7 @@ model Transactions {
   amount          Decimal
   transactionDate DateTime @default(now())
 
-  user     User @relation("TransactionsClient", fields: [userId], references: [id])
+  user     ClientProfile @relation("TransactionsClient", fields: [userId], references: [id])
   vehicle  Vehicle @relation(fields: [vehicleId], references: [id])
   employee User @relation("TransactionsEmployee", fields: [employeeId], references: [id])
 
@@ -99,4 +96,25 @@ model Statistics {
   totalPurchases    Decimal @default(0)
   vehiclesSold      Int     @default(0)
   vehiclesPurchased Int     @default(0)
+}
+
+model ClientProfile {
+  id          Int      @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime?
+  gender      Gender?
+  address     String?
+  phoneNumber String?
+  email       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactions Transactions[] @relation("TransactionsClient")
+}
+
+enum Gender {
+  male
+  female
+  other
 }
