@@ -7,97 +7,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Utilisateur {
+model User {
   id           Int      @id @default(autoincrement())
-  nom          String
+  name         String
   email        String   @unique
-  telephone    String?  
-  adresse      String?  
-  motDePasse   String?  
+  phone        String?  
+  address      String?  
+  password     String?  
   role         Role     @default(client)
-  actif        Boolean  @default(true) 
-  supprime     Boolean  @default(false)
-  dateCreation DateTime @default(now())
+  active       Boolean  @default(true) 
+  deleted      Boolean  @default(false)
+  createdAt    DateTime @default(now())
 
   transactions Transactions[] @relation("TransactionsClient")
-  ventes       Transactions[] @relation("TransactionsEmploye")
+  sales        Transactions[] @relation("TransactionsEmployee")
 
   logs         Logs[]
 }
 
 enum Role {
   client
-  employe
+  employee
   admin
 }
 
-model Vehicule {
+model Vehicle {
   id         Int      @id @default(autoincrement())
-  marque     String
-  modele     String
-  annee      Int
-  kilometrage Int
-  prix       Decimal
-  etat       Etat
-  disponible Boolean @default(true)
-  dateAjout  DateTime @default(now())
+  brand      String
+  model      String
+  year       Int
+  mileage    Int
+  price      Decimal
+  condition  Condition
+  available  Boolean @default(true)
+  addedAt    DateTime @default(now())
 
   transactions Transactions[]
 }
 
-enum Etat {
-  neuf
-  occasion
+enum Condition {
+  new
+  used
 }
 
 model Transactions {
-  id            Int      @id @default(autoincrement())
-  utilisateurId Int
-  vehiculeId    Int
-  employeId     Int
-  type          TypeTransaction
-  montant       Decimal
-  dateTransaction DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  vehicleId       Int
+  employeeId      Int
+  transactionType TransactionType
+  amount          Decimal
+  transactionDate DateTime @default(now())
 
-  utilisateur Utilisateur @relation("TransactionsClient", fields: [utilisateurId], references: [id])
-  vehicule    Vehicule @relation(fields: [vehiculeId], references: [id])
-  employe     Utilisateur @relation("TransactionsEmploye", fields: [employeId], references: [id])
+  user     User @relation("TransactionsClient", fields: [userId], references: [id])
+  vehicle  Vehicle @relation(fields: [vehicleId], references: [id])
+  employee User @relation("TransactionsEmployee", fields: [employeeId], references: [id])
 
-  facture     Facture?
+  invoice  Invoice?
 }
 
-enum TypeTransaction {
-  achat
-  vente
+enum TransactionType {
+  purchase
+  sale
 }
 
-model Facture {
+model Invoice {
   id            Int      @id @default(autoincrement())
   transactionId Int      @unique
-  numeroFacture String   @unique
+  invoiceNumber String   @unique
   details       String
-  montantTotal  Decimal
-  dateFacture   DateTime @default(now())
+  totalAmount   Decimal
+  invoiceDate   DateTime @default(now())
 
   transaction Transactions @relation(fields: [transactionId], references: [id])
 }
 
 model Logs {
-  id           Int      @id @default(autoincrement())
-  utilisateurId Int
-  action       String
-  dateAction   DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  action     String
+  actionDate DateTime @default(now())
 
-  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
-model Statistiques {
+model Statistics {
   id                Int      @id @default(autoincrement())
-  mois              Int
-  annee            Int
-  ventesTotales     Decimal @default(0)
-  achatsTotaux      Decimal @default(0)
-  nbVehiculesVendus Int     @default(0)
-  nbVehiculesAchetes Int    @default(0)
+  month             Int
+  year              Int
+  totalSales        Decimal @default(0)
+  totalPurchases    Decimal @default(0)
+  vehiclesSold      Int     @default(0)
+  vehiclesPurchased Int     @default(0)
 }
