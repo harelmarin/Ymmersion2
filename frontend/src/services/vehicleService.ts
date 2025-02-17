@@ -33,6 +33,18 @@ export const VehicleService = {
       method: 'DELETE',
     });
   },
+
+  getVehicleCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/count');
+  },
+
+  getNewVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/count-new');
+  },
+
+  getUsedVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/count-used');
+  },
 };
 
 export const fetchAllVehicle = () => {
@@ -62,5 +74,26 @@ export const createVehicle = () => {
 export const updateVehicle = () => {
   return useMutation<VehicleData, Error, { id: string; vehicle: VehicleData }>({
     mutationFn: ({ id, vehicle }) => VehicleService.updateVehicle(id, vehicle),
+  });
+};
+
+export const GetVehicleCount = () => {
+  return useQuery<number>({
+    queryKey: ['vehicleCount'],
+    queryFn: VehicleService.getVehicleCount,
+  });
+};
+
+export const GetNewVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['newVehiclesCount'],
+    queryFn: VehicleService.getNewVehiclesCount,
+  });
+};
+
+export const GetUsedVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['usedVehiclesCount'],
+    queryFn: VehicleService.getUsedVehiclesCount,
   });
 };

@@ -30,9 +30,11 @@ export class VehicleService {
     return vehicles;
   }
 
-  findOne(id: number) {
-    const vehicle = this.prismaService.vehicle.findUnique({
-      where: { id },
+  async findOne(id: number) {
+    const vehicle = await this.prismaService.vehicle.findUnique({
+      where: {
+        id: id,
+      },
     });
 
     if (!vehicle) {
@@ -64,6 +66,44 @@ export class VehicleService {
       return deletedVehicle;
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  async getVehicleCount() {
+    try {
+      const count = await this.prismaService.vehicle.count();
+      return count;
+    } catch (error) {
+      console.error('Error counting vehicles:', error);
+      throw error;
+    }
+  }
+
+  async getNewVehiclesCount() {
+    try {
+      const newVehicles = await this.prismaService.vehicle.count({
+        where: {
+          condition: 'new',
+        },
+      });
+      return newVehicles;
+    } catch (error) {
+      console.error('Error fetching new vehicles:', error);
+      throw error;
+    }
+  }
+
+  async getUsedVehiclesCount() {
+    try {
+      const usedVehicles = await this.prismaService.vehicle.count({
+        where: {
+          condition: 'used',
+        },
+      });
+      return usedVehicles;
+    } catch (error) {
+      console.error('Error fetching used vehicles:', error);
+      throw error;
     }
   }
 }

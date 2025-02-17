@@ -23,6 +23,24 @@ export class VehicleController {
     return this.vehicleService.create(createVehicleDto);
   }
 
+  @Get('count')
+  @ApiOperation({ summary: 'Récupérer le nombre de véhicules' })
+  getVehicleCount() {
+    return this.vehicleService.getVehicleCount();
+  }
+
+  @Get('count-new')
+  @ApiOperation({ summary: 'Récupérer le nombre de véhicules neufs' })
+  getNewVehiclesCount() {
+    return this.vehicleService.getNewVehiclesCount();
+  }
+
+  @Get('count-used')
+  @ApiOperation({ summary: 'Récupérer le nombre de véhicules occasions' })
+  getUsedVehiclesCount() {
+    return this.vehicleService.getUsedVehiclesCount();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les véhicules' })
   findAll() {
