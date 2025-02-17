@@ -6,3 +6,98 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+
+model Utilisateur {
+  id           Int      @id @default(autoincrement())
+  nom          String
+  email        String   @unique
+  telephone    String?  
+  adresse      String?  
+  motDePasse   String?  
+  role         Role     @default(client)
+  actif        Boolean  @default(true) 
+  supprime     Boolean  @default(false)
+  dateCreation DateTime @default(now())
+
+  transactions Transactions[] @relation("TransactionsClient")
+  ventes       Transactions[] @relation("TransactionsEmploye")
+
+  logs         Logs[]
+}
+
+enum Role {
+  client
+  employe
+  admin
+}
+
+model Vehicule {
+  id         Int      @id @default(autoincrement())
+  marque     String
+  modele     String
+  annee      Int
+  kilometrage Int
+  prix       Decimal
+  etat       Etat
+  disponible Boolean @default(true)
+  dateAjout  DateTime @default(now())
+
+  transactions Transactions[]
+}
+
+enum Etat {
+  neuf
+  occasion
+}
+
+model Transactions {
+  id            Int      @id @default(autoincrement())
+  utilisateurId Int
+  vehiculeId    Int
+  employeId     Int
+  type          TypeTransaction
+  montant       Decimal
+  dateTransaction DateTime @default(now())
+
+  utilisateur Utilisateur @relation("TransactionsClient", fields: [utilisateurId], references: [id])
+  vehicule    Vehicule @relation(fields: [vehiculeId], references: [id])
+  employe     Utilisateur @relation("TransactionsEmploye", fields: [employeId], references: [id])
+
+  facture     Facture?
+}
+
+enum TypeTransaction {
+  achat
+  vente
+}
+
+model Facture {
+  id            Int      @id @default(autoincrement())
+  transactionId Int      @unique
+  numeroFacture String   @unique
+  details       String
+  montantTotal  Decimal
+  dateFacture   DateTime @default(now())
+
+  transaction Transactions @relation(fields: [transactionId], references: [id])
+}
+
+model Logs {
+  id           Int      @id @default(autoincrement())
+  utilisateurId Int
+  action       String
+  dateAction   DateTime @default(now())
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+}
+
+model Statistiques {
+  id                Int      @id @default(autoincrement())
+  mois              Int
+  annee            Int
+  ventesTotales     Decimal @default(0)
+  achatsTotaux      Decimal @default(0)
+  nbVehiculesVendus Int     @default(0)
+  nbVehiculesAchetes Int    @default(0)
+}
