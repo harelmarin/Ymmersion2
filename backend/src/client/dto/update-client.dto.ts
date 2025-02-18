@@ -1,4 +1,12 @@
-import { IsString, IsOptional, IsEnum, IsEmail, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsEmail,
+  IsDateString,
+} from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
+import { CreateClientProfileDto } from './create-client.dto';
 
 export enum Gender {
   male = 'male',
@@ -6,7 +14,9 @@ export enum Gender {
   other = 'other',
 }
 
-export class UpdateClientProfileDto {
+export class UpdateClientProfileDto extends PartialType(
+  CreateClientProfileDto,
+) {
   @IsOptional()
   @IsString()
   firstName?: string;
@@ -17,7 +27,7 @@ export class UpdateClientProfileDto {
 
   @IsOptional()
   @IsDateString()
-  dateOfBirth?: string;
+  dateOfBirth?: Date;
 
   @IsOptional()
   @IsEnum(Gender)

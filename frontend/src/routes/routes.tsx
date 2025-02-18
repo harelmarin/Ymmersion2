@@ -5,7 +5,7 @@ import Index from '../pages/Home';
 import Vehicles from '../pages/Vehicles';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
-
+import Clients from '../pages/Clients';
 const AppRoutes = () => {
   return (
     <Router>
@@ -15,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/clients" element={<Clients />} />
       </Routes>
     </Router>
   );
