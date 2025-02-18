@@ -1,6 +1,16 @@
 import React from 'react';
+import { useLogout } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const { mutate: logout } = useLogout();
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login')
+  };
+
   return (
     <nav className="bg-white shadow-md">
       <div className="w-[75%] mx-auto max-w-7xl">
@@ -46,6 +56,37 @@ const Navbar = () => {
             <a href="/vehicles" className="text-gray-600 hover:text-gray-800">
               Véhicules
             </a>
+
+            <div className="relative group">
+              <button className="text-gray-600 hover:text-gray-800 focus:outline-none">
+                Mon compte
+              </button>
+
+              {}
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300">
+                <ul className="py-1">
+                  <li>
+                    <a
+                      href="/profile"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Mon compte
+                    </a>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        handleLogout()
+                        
+                      }}
+                      className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      Déconnexion
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

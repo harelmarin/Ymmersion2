@@ -8,6 +8,7 @@ import Login from '../pages/Login';
 import Clients from '../pages/Clients';
 import Dashboard from '../pages/Dashboard';
 import PrivateRoute from '../components/auth/PrivateRoute';
+import Profile from '../pages/Profile';
 
 const AppRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
