@@ -7,19 +7,26 @@ import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Clients from '../pages/Clients';
 import Dashboard from '../pages/Dashboard';
+import PrivateRoute from '../components/auth/PrivateRoute';
+
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="*" element={<NotFound />} />
+        {}
+        <Route
+          path="/"
+          element={<PrivateRoute element={<Index />} />}
+        />
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 };
+
 export default AppRoutes;

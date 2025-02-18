@@ -80,9 +80,18 @@ export class AuthController {
   async me(@Res() res: Response, @Req() req: any) {
     const token = req.cookies['jwt'];
 
-    const user = await this.authService.me(token);
+    const result = await this.authService.me(token);
 
-    return res.json({ id: user.id });
+    if (result.status === 'valid') {
+      return res.json({ status: result.status, id: result.user.id });
+    }
+
+    if (result.status === 'expired') {
+      return res.status(401).json({ message: 'Token has expired' });
+    }
+
+    return res.status(401).json({ message: result.message });
   }
+
 }
 

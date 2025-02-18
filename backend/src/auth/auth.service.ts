@@ -87,16 +87,17 @@ export class AuthService {
     return res.json({ message: 'Logout successful' });
   }
 
-  async me(token: any) {
+  async me(token: string) {
     if (!token) {
-      throw new UnauthorizedException('No token found');
+      return { status: 'invalid', message: 'No token found' };
     }
 
     try {
       const decoded = this.jwtService.verify(token);
       const userId = decoded.sub;
+
       if (!userId) {
-        throw new UnauthorizedException('Invalid token');
+        return { status: 'invalid', message: 'Invalid token' };
       }
 
       const user = await this.prisma.user.findUnique({
@@ -104,12 +105,16 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new NotFoundException('User not found');
+        return { status: 'invalid', message: 'User not found' };
       }
 
-      return user;
+      return { status: 'valid', user };
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      if (error.name === 'TokenExpiredError') {
+        return { status: 'expired', message: 'Token has expired' };
+      }
+
+      return { status: 'invalid', message: 'Invalid token' };
     }
   }
 }

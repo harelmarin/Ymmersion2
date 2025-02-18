@@ -47,20 +47,19 @@ const Login = () => {
       setServerError('');
       
       try {
-        // Appel à l'API pour la connexion
         const response = await fetch('http://localhost:3000/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
+          credentials: 'include',
         });
 
         if (response.ok) {
           const data = await response.json();
           console.log('Utilisateur connecté avec succès:', data);
-
-          // Redirection vers la page d'accueil après une connexion réussie
+          
           navigate('/');
 
         } else {
