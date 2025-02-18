@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
+import Statistics from '../components/common/Statistcs';
 import Navbar from '../components/Navbar';
 import {
-  GetVehicleCount,
-  GetNewVehiclesCount,
-  GetUsedVehiclesCount,
   CreateVehicle,
   GetLastAddedVehicle,
 } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import { VehicleData } from '../types/vehicleData';
 import {
-  GetClientCount,
   GetLastAddedClient,
   CreateClient,
 } from '../services/clientService';
 import AddClientForm from '../components/form/AddClientForm';
 import { ClientData } from '../types/clientData';
 const Home = () => {
-  const { data: vehicleCount, refetch: refetchVehicleCount } =
-    GetVehicleCount();
-  const { data: newVehiclesCount, refetch: refetchNewVehiclesCount } =
-    GetNewVehiclesCount();
-  const { data: usedVehiclesCount, refetch: refetchUsedVehiclesCount } =
-    GetUsedVehiclesCount();
   const { data: lastVehicles, refetch: refetchLastVehicles } =
     GetLastAddedVehicle();
-  const { data: clientCount, refetch: refetchClientCount } = GetClientCount();
   const { data: lastAddedClient, refetch: refetchLastAddedClient } =
     GetLastAddedClient();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -45,9 +35,6 @@ const Home = () => {
 
       setIsAddModalOpen(false);
       await Promise.all([
-        refetchVehicleCount(),
-        refetchNewVehiclesCount(),
-        refetchUsedVehiclesCount(),
         refetchLastVehicles(),
       ]);
     } catch (error) {
@@ -67,7 +54,6 @@ const Home = () => {
       });
 
       setIsAddClientModalOpen(false);
-      refetchClientCount();
       refetchLastAddedClient();
     } catch (error) {
       console.error("Erreur lors de l'ajout du client:", error);
@@ -79,45 +65,7 @@ const Home = () => {
       <Navbar />
       <div className="w-full min-h-screen p-5 bg-gray-100 mt-10">
         <div className="w-[75%] mx-auto max-w-7xl">
-          <section className="mb-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-sm font-medium text-gray-500">
-                  Véhicules en stock
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">
-                  {vehicleCount}
-                </p>
-                <p className="text-xs text-gray-500 mt-2">
-                  {newVehiclesCount} neufs, {usedVehiclesCount} occasions
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-sm font-medium text-gray-500">
-                  Ventes du mois
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">12</p>
-                <p className="text-xs text-green-500 mt-2">
-                  +20% vs mois dernier
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-sm font-medium text-gray-500">
-                  Clients actifs
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">
-                  {clientCount}
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-sm font-medium text-gray-500">
-                  Chiffre d'affaires
-                </h3>
-                <p className="text-2xl font-bold text-blue-600">125k€</p>
-              </div>
-            </div>
-          </section>
-
+          <Statistics />
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-700 mb-6">
               Gestion
@@ -150,11 +98,10 @@ const Home = () => {
                             </p>
                           </div>
                           <span
-                            className={`text-xs px-2 py-1 rounded-full ${
-                              vehicle.condition === 'new'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}
+                            className={`text-xs px-2 py-1 rounded-full ${vehicle.condition === 'new'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                              }`}
                           >
                             {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
                           </span>
@@ -190,11 +137,10 @@ const Home = () => {
                             </p>
                           </div>
                           <span
-                            className={`text-xs px-2 py-1 rounded-full ${
-                              vehicle.condition === 'new'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}
+                            className={`text-xs px-2 py-1 rounded-full ${vehicle.condition === 'new'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                              }`}
                           >
                             {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
                           </span>
