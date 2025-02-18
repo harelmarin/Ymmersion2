@@ -44,6 +44,29 @@ export class TransactionService {
     return transaction;
   }
 
+  async getAllTransactionFromUser(userId: number): Promise<Transaction[]> {
+    const transactions = await this.prisma.transactions.findMany({
+      where: { userId },
+      include: {
+        vehicle: true,
+        employee: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+            role: true
+          }
+        },
+        invoice: true
+      }
+    });
+
+    if (transactions.length === 0) {
+      throw new NotFoundException(`No transactions found for user with ID ${userId}`);
+    }
+
+    return transactions;
+  }
 
   async deleteTransaction(id: number): Promise<Transaction> {
     return await this.prisma.transactions.delete({

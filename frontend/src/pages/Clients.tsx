@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
+import { useNavigate } from "react-router-dom";
 import {
   fetchAllClients,
   CreateClient,
@@ -73,6 +74,12 @@ const Clients = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleViewTransactionHistory = async (id: string) => {
+    navigate(`/transaction/user/${id}`)
+  }
+
   return (
     <>
       <Navbar />
@@ -124,6 +131,7 @@ const Clients = () => {
               <div className="grid grid-cols-1 gap-4">
                 {filteredClients.map((client) => (
                   <div
+
                     key={client.id}
                     className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
                   >
@@ -184,6 +192,27 @@ const Clients = () => {
                             />
                           </svg>
                         </button>
+
+                        <button
+                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          onClick={() => handleViewTransactionHistory(client.id)}
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 8v4l3 3m6-3a9 9 0 11-9-9"
+                            />
+                          </svg>
+                        </button>
+
+
                       </div>
                     </div>
 

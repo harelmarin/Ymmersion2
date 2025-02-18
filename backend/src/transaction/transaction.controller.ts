@@ -18,6 +18,11 @@ export class TransactionController {
     return await this.transactionService.getTransactionById(id)
   }
 
+  @Get('user/:userId')
+  async getAllTransactionFromUser(@Param('userId', ParseIntPipe) userId: number) {
+    return await this.transactionService.getAllTransactionFromUser(userId);
+  }
+
   @Post()
   async createTransaction(@Body() data: CreateTransactionDto) {
     return await this.transactionService.CreateTransaction(data);

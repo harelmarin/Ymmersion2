@@ -9,12 +9,13 @@ import Clients from '../pages/Clients';
 import Dashboard from '../pages/Dashboard';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import Profile from '../pages/Profile';
+import TransactionHistory from '../pages/TransactionHistory';
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {}
+        { }
         <Route path="/index" element={<PrivateRoute element={<Index />} />} />
         <Route
           path="/vehicles"
@@ -29,6 +30,10 @@ const AppRoutes = () => {
         <Route
           path="/dashboard"
           element={<PrivateRoute element={<Dashboard />} />}
+        />
+        <Route
+          path="/transaction/user/:id"
+          element={<PrivateRoute element={<TransactionHistory />} />}
         />
         <Route
           path="/profile"
