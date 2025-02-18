@@ -1,5 +1,3 @@
-
-
 export class Statistic {
   id: number;
   month: number;

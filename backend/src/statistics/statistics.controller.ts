@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { CreateStatisticDto } from './dto/create-statistic.dto';
 import { UpdateStatisticDto } from './dto/update-statistic.dto';
 
 @Controller('statistics')
@@ -29,6 +28,4 @@ export class StatisticsController {
   async deleteStatistics(@Param('id', ParseIntPipe) id: number) {
     return await this.statisticsService.deleteStatistics(id)
   }
-
-
 }

@@ -6,6 +6,7 @@ import Vehicles from '../pages/Vehicles';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Clients from '../pages/Clients';
+import Dashboard from '../pages/Dashboard';
 const AppRoutes = () => {
   return (
     <Router>
@@ -16,6 +17,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/clients" element={<Clients />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
