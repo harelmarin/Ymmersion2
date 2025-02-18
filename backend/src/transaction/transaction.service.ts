@@ -10,7 +10,6 @@ export class TransactionService {
 
 
   async CreateTransaction(data: CreateTransactionDto): Promise<Transaction> {
-    console.log("transaction", data)
     return await this.prisma.transactions.create({
       data: { ...data },
       include: { vehicle: true, employee: true, user: true },
@@ -43,6 +42,24 @@ export class TransactionService {
     }
 
     return transaction;
+  }
+
+
+  async deleteTransaction(id: number): Promise<Transaction> {
+    return await this.prisma.transactions.delete({
+      where: { id: id }
+    })
+  }
+
+  async updateTransaction(id: number, data: UpdateTransactionDto): Promise<Transaction> {
+    try {
+      return await this.prisma.transactions.update({
+        where: { id: id },
+        data: { ...data }
+      })
+    } catch (error) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
   }
 
 }

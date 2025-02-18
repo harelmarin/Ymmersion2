@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
-import { Logger } from '@nestjs/common';
 
 @Controller('transaction')
 export class TransactionController {
@@ -21,7 +20,16 @@ export class TransactionController {
 
   @Post()
   async createTransaction(@Body() data: CreateTransactionDto) {
-    Logger.log('Received data:', data);
     return await this.transactionService.CreateTransaction(data);
+  }
+
+  @Delete(':id')
+  async deleteTransaction(@Param('id', ParseIntPipe) id: number) {
+    return await this.deleteTransaction(id)
+  }
+
+  @Patch(':id')
+  async updateTransaction(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateTransactionDto) {
+    return await this.updateTransaction(id, data)
   }
 }

@@ -6,9 +6,10 @@ import { VehicleModule } from './vehicle/vehicle.module';
 import { UserModule } from './user/user.module';
 import { ClientModule } from './client/client.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 @Module({
-  imports: [PrismaClient, VehicleModule, UserModule, ClientModule, TransactionModule],
+  imports: [PrismaClient, VehicleModule, UserModule, ClientModule, TransactionModule, InvoiceModule],
   controllers: [AppController],
   providers: [AppService],
 })
