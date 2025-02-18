@@ -77,11 +77,11 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full min-h-screen p-5 bg-gray-50 mt-20">
+      <div className="w-full min-h-screen p-5 bg-gray-100 mt-10">
         <div className="w-[75%] mx-auto max-w-7xl">
           <section className="mb-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <h3 className="text-sm font-medium text-gray-500">
                   Véhicules en stock
                 </h3>
@@ -92,7 +92,7 @@ const Home = () => {
                   {newVehiclesCount} neufs, {usedVehiclesCount} occasions
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <h3 className="text-sm font-medium text-gray-500">
                   Ventes du mois
                 </h3>
@@ -101,7 +101,7 @@ const Home = () => {
                   +20% vs mois dernier
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <h3 className="text-sm font-medium text-gray-500">
                   Clients actifs
                 </h3>
@@ -109,7 +109,7 @@ const Home = () => {
                   {clientCount}
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                 <h3 className="text-sm font-medium text-gray-500">
                   Chiffre d'affaires
                 </h3>
@@ -123,7 +123,7 @@ const Home = () => {
               Gestion
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl text-gray-600">
                     Dernières transactions
@@ -165,7 +165,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl text-gray-600">Véhicules récents</h3>
                   <a
@@ -205,7 +205,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-xl text-gray-600">
                     Derniers clients inscrits
