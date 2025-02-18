@@ -7,6 +7,7 @@ export type VehicleData = {
   year: number;
   mileage: number;
   price: number;
+  purchasePrice: number,
   condition: Condition;
   available: boolean;
   addedAt: string;

@@ -31,4 +31,10 @@ export class UpdateVehicleDto extends PartialType(CreateVehicleDto) {
 
   @ApiPropertyOptional({ example: true, description: 'Nouvelle disponibilité' })
   available?: boolean;
+
+  @ApiPropertyOptional({
+    example: 20000.00,
+    description: 'Nouveau prix d\'achat',
+  })
+  purchasePrice?: number;
 }

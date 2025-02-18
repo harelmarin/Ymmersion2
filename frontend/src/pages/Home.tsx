@@ -83,25 +83,38 @@ const Home = () => {
                     Voir tout
                   </a>
                 </div>
-                <div className="divide-y divide-gray-200">
-                  {lastVehicles?.map((vehicle) => (
-                    <div key={vehicle.id} className="py-3">
-                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium">
-                              {vehicle.brand} {vehicle.model}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {vehicle.year} • {vehicle.mileage} km •{' '}
-                              {vehicle.price}€
-                            </p>
-                          </div>
+                <div className="space-y-0">
+                  {lastVehicles?.map((vehicle, index) => (
+                    <div
+                      key={vehicle.id}
+                      style={{ backgroundColor: index % 2 === 0 ? "#F2F6FE" : "white" }}
+                      className="shadow-sm hover:shadow-md transition-all duration-200 p-4 "
+                    >
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+                        <div className="col-span-2 md:col-span-1">
+                          <p className="font-semibold text-lg">
+                            {vehicle.brand} {vehicle.model}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {vehicle.year} • {vehicle.mileage.toLocaleString()} km
+                          </p>
+                        </div>
+
+                        <div className="flex flex-col">
+                          <p className="text-sm text-gray-500">Prix :</p>
+                          <p className="text-lg font-semibold text-gray-900">{vehicle.price}€</p>
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-sm text-gray-500">Prix d'achat :</p>
+                          <p className="text-lg font-semibold text-gray-900 blur-sm hover:blur-none transition-all">
+                            {vehicle.purchasePrice}€
+                          </p>
+                        </div>
+
+                        <div className="flex justify-end">
                           <span
-                            className={`text-xs px-2 py-1 rounded-full ${vehicle.condition === 'new'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-blue-100 text-blue-800'
-                              }`}
+                            className={`text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap 
+              ${vehicle.condition === 'new' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}
                           >
                             {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
                           </span>
@@ -133,7 +146,10 @@ const Home = () => {
                             </p>
                             <p className="text-sm text-gray-500">
                               {vehicle.year} • {vehicle.mileage} km •{' '}
-                              {vehicle.price}€
+                              {vehicle.price}€{' PA:'}
+                              <span className="blur-sm hover:blur-none">
+                                {vehicle.purchasePrice}€
+                              </span>
                             </p>
                           </div>
                           <span

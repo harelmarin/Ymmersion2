@@ -6,12 +6,16 @@ import {
 } from '../../services/vehicleService';
 
 import { GetClientCount } from '../../services/clientService'
+import { fetchStatisticsByMonth } from '../../services/statisticService';
 
 const Statistics = () => {
   const { data: vehicleCount, isLoading: isLoadingVehicleCount, error: errorVehicleCount } = GetVehicleCount();
   const { data: newVehiclesCount, isLoading: isLoadingNewVehiclesCount, error: errorNewVehiclesCount } = GetNewVehiclesCount();
   const { data: usedVehiclesCount, isLoading: isLoadingUsedVehiclesCount, error: errorUsedVehiclesCount } = GetUsedVehiclesCount();
   const { data: clientCount, isLoading: isLoadingClientCount, error: errorClientCount } = GetClientCount();
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
+  const { data: statisticCount, isLoading: isLoadingStatisticCount, error: errorStatisticCount } = fetchStatisticsByMonth(currentMonth, currentYear);
 
   if (isLoadingVehicleCount || isLoadingNewVehiclesCount || isLoadingUsedVehiclesCount || isLoadingClientCount) {
     return <div>Chargement...</div>;
@@ -40,7 +44,7 @@ const Statistics = () => {
           <h3 className="text-sm font-medium text-gray-500">
             Ventes du mois
           </h3>
-          <p className="text-2xl font-bold text-blue-600">12</p>
+          <p className="text-2xl font-bold text-blue-600"> {statisticCount?.vehiclesSold}</p>
           <p className="text-xs text-green-500 mt-2">
             +20% vs mois dernier
           </p>
@@ -57,9 +61,9 @@ const Statistics = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
           <h3 className="text-sm font-medium text-gray-500">
-            Chiffre d'affaires
+            Chiffre d'affaires du mois
           </h3>
-          <p className="text-2xl font-bold text-blue-600">125k€</p>
+          <p className="text-2xl font-bold text-blue-600">{statisticCount?.totalSales}€</p>
         </div>
       </div>
     </section>

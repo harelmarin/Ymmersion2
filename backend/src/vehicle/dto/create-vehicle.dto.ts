@@ -45,4 +45,8 @@ export class CreateVehicleDto {
   @ApiProperty({ example: true, description: 'Disponibilité du véhicule' })
   @IsBoolean()
   available: boolean;
+
+  @ApiProperty({ example: 23000.50, description: 'Prix d\'achat du véhicule' })
+  @IsDecimal()
+  purchasePrice: number;
 }

@@ -35,6 +35,7 @@ model Vehicle {
   year       Int
   mileage    Int
   price      Decimal
+  purchasePrice Decimal
   condition  Condition
   available  Boolean @default(true)
   addedAt    DateTime @default(now())

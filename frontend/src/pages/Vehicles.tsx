@@ -177,11 +177,12 @@ const Vehicles = () => {
             {isLoading ? (
               <div className="text-center py-10">Chargement...</div>
             ) : (
-              <div className="grid grid-cols-1 gap-4">
-                {filteredVehicles.map((vehicle) => (
+              <div className="grid grid-cols-1 ">
+                {filteredVehicles.map((vehicle, index) => (
                   <div
                     key={vehicle.id}
-                    className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                    style={{ backgroundColor: index % 2 === 0 ? "#F2F6FE" : "white" }}
+                    className="bg-white shadow-md p-6 hover:shadow-lg transition-shadow"
                   >
                     <div className="flex justify-between items-start">
                       <div>
@@ -194,14 +195,18 @@ const Vehicles = () => {
                             {vehicle.mileage} km
                           </p>
                           <p className="text-lg font-semibold text-blue-600">
-                            {vehicle.price.toLocaleString()} €
+                            {vehicle.price.toLocaleString()} € -
+                            <span className="relative group">
+                              <span className="blur-sm group-hover:blur-none transition duration-300">
+                                PA: {vehicle.purchasePrice.toLocaleString()} €
+                              </span>
+                            </span>
                           </p>
                           <span
-                            className={`inline-block px-2 py-1 text-xs rounded-full ${
-                              vehicle.condition.toLowerCase() === 'new'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-blue-100 text-blue-800'
-                            }`}
+                            className={`inline-block px-2 py-1 text-xs rounded-full ${vehicle.condition.toLowerCase() === 'new'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                              }`}
                           >
                             {vehicle.condition.toLowerCase() === 'new'
                               ? 'Neuf'

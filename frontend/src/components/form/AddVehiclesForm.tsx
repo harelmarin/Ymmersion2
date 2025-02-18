@@ -16,6 +16,7 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
     year: new Date().getFullYear(),
     mileage: 0,
     price: 0,
+    purchasePrice: 0,
     condition: 'used',
     available: true,
     addedAt: new Date().toISOString(),
@@ -135,7 +136,7 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
             htmlFor="price"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Prix
+            Prix de vente
           </label>
           <input
             type="number"
@@ -148,6 +149,25 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
             required
           />
         </div>
+        <div>
+          <label
+            htmlFor="purchasePrice"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Prix d'achat
+          </label>
+          <input
+            type="number"
+            id="purchasePrice"
+            name="purchasePrice"
+            value={formData.purchasePrice}
+            onChange={handleChange}
+            min="0"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
 
         <div>
           <label

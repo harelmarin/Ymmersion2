@@ -35,6 +35,9 @@ export class Vehicle {
   @CreateDateColumn()
   addedAt: Date;
 
+  @Column('decimal', { precision: 10, scale: 2 })
+  purchasePrice: number;
+
   // @OneToMany(() => Transaction, (transaction) => transaction.vehicle)
   // transactions: Transaction[];
 }
