@@ -55,20 +55,22 @@ const Register = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       setServerError('');
-      
+
+      const { confirmPassword, ...dataToSend } = formData;
+
       try {
         const response = await fetch('http://localhost:3000/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(dataToSend),
         });
 
         if (response.ok) {
           const data = await response.json();
           console.log('Utilisateur créé avec succès:', data);
-          navigate('/');
+          navigate('/'); // Redirige vers la page d'accueil après l'inscription
         } else {
           const errorData = await response.json();
           setServerError(errorData.message || 'Une erreur est survenue');
