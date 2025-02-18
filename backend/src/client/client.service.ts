@@ -41,9 +41,14 @@ export class ClientService {
     data: UpdateClientProfileDto,
   ): Promise<ClientProfile> {
     try {
+      const { dateOfBirth, ...restData } = data;
+
       return await this.prisma.clientProfile.update({
         where: { id: parseInt(id) },
-        data: { ...data },
+        data: {
+          ...restData,
+          dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+        },
       });
     } catch (error) {
       throw new Error('Error while updating client profile: ' + error.message);
@@ -52,6 +57,14 @@ export class ClientService {
 
   async deleteClient(id: string): Promise<ClientProfile> {
     try {
+      const client = await this.prisma.clientProfile.findUnique({
+        where: { id: parseInt(id) },
+      });
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
       return await this.prisma.clientProfile.delete({
         where: { id: parseInt(id) },
       });
@@ -86,9 +99,10 @@ export class ClientService {
     }
   }
 
-  async getLastAddedClient(): Promise<ClientProfile> {
+  async getLastAddedClient(): Promise<ClientProfile[]> {
     try {
-      return await this.prisma.clientProfile.findFirst({
+      return await this.prisma.clientProfile.findMany({
+        take: 3,
         orderBy: { createdAt: 'desc' },
       });
     } catch (error) {

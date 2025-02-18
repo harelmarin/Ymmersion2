@@ -9,7 +9,13 @@ import {
 } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import { VehicleData } from '../types/vehicleData';
-
+import {
+  GetClientCount,
+  GetLastAddedClient,
+  CreateClient,
+} from '../services/clientService';
+import AddClientForm from '../components/form/AddClientForm';
+import { ClientData } from '../types/clientData';
 const Home = () => {
   const { data: vehicleCount, refetch: refetchVehicleCount } =
     GetVehicleCount();
@@ -19,8 +25,13 @@ const Home = () => {
     GetUsedVehiclesCount();
   const { data: lastVehicles, refetch: refetchLastVehicles } =
     GetLastAddedVehicle();
+  const { data: clientCount, refetch: refetchClientCount } = GetClientCount();
+  const { data: lastAddedClient, refetch: refetchLastAddedClient } =
+    GetLastAddedClient();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const createVehicleMutation = CreateVehicle();
+  const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
+  const createClientMutation = CreateClient();
 
   const handleAddVehicle = async (formData: VehicleData) => {
     try {
@@ -41,6 +52,25 @@ const Home = () => {
       ]);
     } catch (error) {
       console.error("Erreur lors de l'ajout du véhicule:", error);
+    }
+  };
+
+  const handleAddClient = async (formData: ClientData) => {
+    try {
+      const { id, ...clientDataWithoutId } = formData;
+
+      await createClientMutation.mutateAsync({
+        ...clientDataWithoutId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        id: '',
+      });
+
+      setIsAddClientModalOpen(false);
+      refetchClientCount();
+      refetchLastAddedClient();
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du client:", error);
     }
   };
 
@@ -75,7 +105,9 @@ const Home = () => {
                 <h3 className="text-sm font-medium text-gray-500">
                   Clients actifs
                 </h3>
-                <p className="text-2xl font-bold text-blue-600">156</p>
+                <p className="text-2xl font-bold text-blue-600">
+                  {clientCount}
+                </p>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-sm font-medium text-gray-500">
@@ -103,18 +135,33 @@ const Home = () => {
                     Voir tout
                   </a>
                 </div>
-                <div className="space-y-3">
-                  <div className="p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">Renault Clio IV</p>
-                        <p className="text-sm text-gray-500">Vente • 15 000€</p>
+                <div className="divide-y divide-gray-200">
+                  {lastVehicles?.map((vehicle) => (
+                    <div key={vehicle.id} className="py-3">
+                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-medium">
+                              {vehicle.brand} {vehicle.model}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {vehicle.year} • {vehicle.mileage} km •{' '}
+                              {vehicle.price}€
+                            </p>
+                          </div>
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              vehicle.condition === 'new'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-blue-100 text-blue-800'
+                            }`}
+                          >
+                            {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
+                          </span>
+                        </div>
                       </div>
-                      <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                        Finalisée
-                      </span>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
@@ -128,37 +175,68 @@ const Home = () => {
                     Voir tout
                   </a>
                 </div>
-                <div className="space-y-3">
-                  <div className="p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                    <div className="flex justify-between items-center">
-                      <div className="w-full">
-                        {lastVehicles?.map((vehicle) => (
-                          <div className="p-3 hover:bg-gray-50 rounded-lg transition-colors flex justify-between items-center w-full">
-                            <div className="flex flex-col">
-                              <p className="font-medium">
-                                {vehicle.brand} {vehicle.model}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {vehicle.year} • {vehicle.mileage} km •{' '}
-                                {vehicle.price}
-                              </p>
-                            </div>
-                            <span
-                              className={`text-xs px-2 py-1 rounded-full ${
-                                vehicle.condition === 'new'
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-blue-100 text-blue-800'
-                              }`}
-                            >
-                              {vehicle.condition === 'new'
-                                ? 'Neuf'
-                                : 'Occasion'}
-                            </span>
+                <div className="divide-y divide-gray-200">
+                  {lastVehicles?.map((vehicle) => (
+                    <div key={vehicle.id} className="py-3">
+                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-medium">
+                              {vehicle.brand} {vehicle.model}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {vehicle.year} • {vehicle.mileage} km •{' '}
+                              {vehicle.price}€
+                            </p>
                           </div>
-                        ))}
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              vehicle.condition === 'new'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-blue-100 text-blue-800'
+                            }`}
+                          >
+                            {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl text-gray-600">
+                    Derniers clients inscrits
+                  </h3>
+                  <a
+                    href="/clients"
+                    className="text-sm text-blue-600 hover:text-blue-800 hover:cursor-pointer"
+                  >
+                    Voir tout
+                  </a>
+                </div>
+                <div className="divide-y divide-gray-200">
+                  {lastAddedClient?.map((client) => (
+                    <div key={client.id} className="py-3">
+                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-medium">
+                              {client.firstName} {client.lastName}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {client.email} • {client.phoneNumber}
+                            </p>
+                          </div>
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            Nouveau
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -178,12 +256,29 @@ const Home = () => {
             </div>
           )}
 
+          {isAddClientModalOpen && (
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-6 border-2 border-blue-100">
+              <div className="border-b pb-4 mb-4">
+                <h2 className="text-xl font-semibold text-blue-600">
+                  Ajouter un nouveau client
+                </h2>
+              </div>
+              <AddClientForm
+                onSubmit={handleAddClient}
+                onCancel={() => setIsAddClientModalOpen(false)}
+              />
+            </div>
+          )}
+
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-700 mb-6">
               Actions rapides
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration hover:cursor-pointer">
+              <button
+                onClick={() => setIsAddClientModalOpen(true)}
+                className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration hover:cursor-pointer"
+              >
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="none"

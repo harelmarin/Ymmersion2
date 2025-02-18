@@ -41,6 +41,28 @@ export class ClientController {
     return await this.clientService.createClient(createClientDto);
   }
 
+  @Get('count')
+  @ApiOperation({ summary: 'Obtenir le nombre total de clients' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Nombre total de clients récupéré avec succès.',
+    type: Number,
+  })
+  async getCount() {
+    return await this.clientService.getClientCount();
+  }
+
+  @Get('last-added')
+  @ApiOperation({ summary: 'Obtenir les 3 derniers clients ajoutés' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Dernier client ajouté récupéré avec succès.',
+    type: ClientProfile,
+  })
+  async getLastAdded() {
+    return await this.clientService.getLastAddedClient();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les clients' })
   @ApiResponse({
@@ -118,27 +140,5 @@ export class ClientController {
   })
   async remove(@Param('id') id: string) {
     return await this.clientService.deleteClient(id);
-  }
-
-  @Get('count')
-  @ApiOperation({ summary: 'Obtenir le nombre total de clients' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Nombre total de clients récupéré avec succès.',
-    type: Number,
-  })
-  async getCount() {
-    return await this.clientService.getClientCount();
-  }
-
-  @Get('last-added')
-  @ApiOperation({ summary: 'Obtenir le dernier client ajouté' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Dernier client ajouté récupéré avec succès.',
-    type: ClientProfile,
-  })
-  async getLastAdded() {
-    return await this.clientService.getLastAddedClient();
   }
 }

@@ -30,6 +30,14 @@ export const ClientService = {
       method: 'DELETE',
     });
   },
+
+  getClientCount: async (): Promise<number> => {
+    return apiClient<number>('/client/count');
+  },
+
+  getLastAddedClient: async (): Promise<ClientData[]> => {
+    return apiClient<ClientData[]>('/client/last-added');
+  },
 };
 
 export const fetchAllClients = () => {
@@ -56,5 +64,19 @@ export const updateClient = () => {
 export const DeleteClient = () => {
   return useMutation<ClientData, Error, string>({
     mutationFn: (id: string) => ClientService.deleteClient(id),
+  });
+};
+
+export const GetClientCount = () => {
+  return useQuery<number>({
+    queryKey: ['clientCount'],
+    queryFn: ClientService.getClientCount,
+  });
+};
+
+export const GetLastAddedClient = () => {
+  return useQuery<ClientData[]>({
+    queryKey: ['lastAddedClient'],
+    queryFn: ClientService.getLastAddedClient,
   });
 };

@@ -110,7 +110,7 @@ export class VehicleService {
   async getLastAddedVehicles() {
     try {
       const vehicles = await this.prismaService.vehicle.findMany({
-        take: 1,
+        take: 3,
         orderBy: {
           addedAt: 'desc',
         },
