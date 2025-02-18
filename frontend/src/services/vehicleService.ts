@@ -113,3 +113,9 @@ export const GetUsedVehiclesCount = () => {
     queryFn: VehicleService.getUsedVehiclesCount,
   });
 };
+
+export const DeleteVehicle = () => {
+  return useMutation<VehicleData, Error, string>({
+    mutationFn: (id: string) => VehicleService.deleteVehicle(id),
+  });
+};

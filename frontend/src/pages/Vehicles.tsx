@@ -4,6 +4,7 @@ import {
   fetchAllVehicle,
   createVehicle,
   updateVehicle,
+  DeleteVehicle,
 } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import EditVehiclesForm from '../components/form/EditVehiclesForm';
@@ -11,8 +12,8 @@ import { VehicleData } from '../types/vehicleData';
 const Vehicles = () => {
   const { data: vehicles, isLoading, refetch } = fetchAllVehicle();
   const createVehicleMutation = createVehicle();
-
   const updateVehicleMutation = updateVehicle();
+  const deleteVehicleMutation = DeleteVehicle();
   const [searchTerm, setSearchTerm] = useState('');
   const [brandFilter, setBrandFilter] = useState('');
   const [conditionFilter, setConditionFilter] = useState('');
@@ -87,6 +88,15 @@ const Vehicles = () => {
         formData,
         vehicleId: selectedVehicle?.id,
       });
+    }
+  };
+
+  const handledeleteVehicle = async (id) => {
+    try {
+      await deleteVehicleMutation.mutateAsync(id);
+      refetch();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du véhicule:', error);
     }
   };
 
@@ -238,7 +248,10 @@ const Vehicles = () => {
                           />
                         </svg>
                       </button>
-                      <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                      <button
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        onClick={() => handledeleteVehicle(vehicle.id)}
+                      >
                         <svg
                           className="w-5 h-5"
                           fill="none"

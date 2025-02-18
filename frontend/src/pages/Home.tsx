@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import {
   GetVehicleCount,
   GetNewVehiclesCount,
   GetUsedVehiclesCount,
+  createVehicle,
 } from '../services/vehicleService';
+import AddVehiclesForm from '../components/form/AddVehiclesForm';
+import { VehicleData } from '../types/vehicleData';
 
 const Home = () => {
   const { data: vehicleCount } = GetVehicleCount();
   const { data: newVehiclesCount } = GetNewVehiclesCount();
   const { data: usedVehiclesCount } = GetUsedVehiclesCount();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const createVehicleMutation = createVehicle();
+
+  const handleAddVehicle = async (formData: VehicleData) => {
+    try {
+      const { id, ...vehicleDataWithoutId } = formData;
+
+      await createVehicleMutation.mutateAsync({
+        ...vehicleDataWithoutId,
+        available: true,
+        addedAt: new Date().toISOString(),
+      } as VehicleData);
+
+      setIsAddModalOpen(false);
+      GetVehicleCount();
+      GetNewVehiclesCount();
+      GetUsedVehiclesCount();
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du véhicule:", error);
+    }
+  };
 
   return (
     <>
@@ -65,7 +89,7 @@ const Home = () => {
                   </h3>
                   <a
                     href="/transactions"
-                    className="text-sm text-blue-600 hover:text-blue-800"
+                    className="text-sm text-blue-600 hover:text-blue-800 hover:cursor-pointer"
                   >
                     Voir tout
                   </a>
@@ -90,7 +114,7 @@ const Home = () => {
                   <h3 className="text-xl text-gray-600">Véhicules récents</h3>
                   <a
                     href="/vehicles"
-                    className="text-sm text-blue-600 hover:text-blue-800"
+                    className="text-sm text-blue-600 hover:text-blue-800 hover:cursor-pointer"
                   >
                     Voir tout
                   </a>
@@ -114,12 +138,26 @@ const Home = () => {
             </div>
           </section>
 
+          {isAddModalOpen && (
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-6 border-2 border-blue-100">
+              <div className="border-b pb-4 mb-4">
+                <h2 className="text-xl font-semibold text-blue-600 ">
+                  Ajouter un nouveau véhicule
+                </h2>
+              </div>
+              <AddVehiclesForm
+                onSubmit={handleAddVehicle}
+                onCancel={() => setIsAddModalOpen(false)}
+              />
+            </div>
+          )}
+
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-700 mb-6">
               Actions rapides
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200">
+              <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration hover:cursor-pointer">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="none"
@@ -135,7 +173,10 @@ const Home = () => {
                 </svg>
                 Nouvelle fiche client
               </button>
-              <button className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200">
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer"
+              >
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="none"
@@ -151,7 +192,7 @@ const Home = () => {
                 </svg>
                 Ajouter véhicule
               </button>
-              <button className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200">
+              <button className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="none"
@@ -167,7 +208,7 @@ const Home = () => {
                 </svg>
                 Créer facture
               </button>
-              <button className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors duration-200">
+              <button className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer">
                 <svg
                   className="w-5 h-5 mr-2"
                   fill="none"
