@@ -15,16 +15,25 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         {}
+        <Route path="/index" element={<PrivateRoute element={<Index />} />} />
         <Route
-          path="/"
-          element={<PrivateRoute element={<Index />} />}
+          path="/vehicles"
+          element={<PrivateRoute element={<Vehicles />} />}
         />
-        <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/clients" element={<Clients />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/clients"
+          element={<PrivateRoute element={<Clients />} />}
+        />
+        <Route
+          path="/dashboard"
+          element={<PrivateRoute element={<Dashboard />} />}
+        />
+        <Route
+          path="/profile"
+          element={<PrivateRoute element={<Profile />} />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

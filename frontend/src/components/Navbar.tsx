@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { mutate: logout } = useLogout();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/login')
+    navigate('/login');
   };
 
   return (
@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="w-[75%] mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex items-center">
-            <a href="/">
+            <a href="/index">
               <h2 className="text-xl font-bold text-gray-800">
                 Garage la Phocéenne
               </h2>
@@ -76,8 +76,7 @@ const Navbar = () => {
                   <li>
                     <button
                       onClick={() => {
-                        handleLogout()
-                        
+                        handleLogout();
                       }}
                       className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
                     >
