@@ -106,4 +106,19 @@ export class VehicleService {
       throw error;
     }
   }
+
+  async getLastAddedVehicles() {
+    try {
+      const vehicles = await this.prismaService.vehicle.findMany({
+        take: 1,
+        orderBy: {
+          addedAt: 'desc',
+        },
+      });
+      return vehicles;
+    } catch (error) {
+      console.error('Error fetching last added vehicles:', error);
+      throw error;
+    }
+  }
 }

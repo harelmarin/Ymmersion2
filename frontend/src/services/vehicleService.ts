@@ -55,6 +55,10 @@ export const VehicleService = {
   getUsedVehiclesCount: async (): Promise<number> => {
     return apiClient<number>('/vehicle/count-used');
   },
+
+  getLastAddedVehicles: async (): Promise<VehicleData[]> => {
+    return apiClient<VehicleData[]>('/vehicle/last-added');
+  },
 };
 
 export const fetchAllVehicle = () => {
@@ -75,7 +79,7 @@ export const fetchVehicle = (id: string) => {
   });
 };
 
-export const createVehicle = () => {
+export const CreateVehicle = () => {
   return useMutation<VehicleData, Error, VehicleData>({
     mutationFn: (data: VehicleData) =>
       VehicleService.createVehicle({
@@ -117,5 +121,12 @@ export const GetUsedVehiclesCount = () => {
 export const DeleteVehicle = () => {
   return useMutation<VehicleData, Error, string>({
     mutationFn: (id: string) => VehicleService.deleteVehicle(id),
+  });
+};
+
+export const GetLastAddedVehicle = () => {
+  return useQuery<VehicleData[]>({
+    queryKey: ['lastAddedVehicles'],
+    queryFn: VehicleService.getLastAddedVehicles,
   });
 };

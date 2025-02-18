@@ -4,17 +4,23 @@ import {
   GetVehicleCount,
   GetNewVehiclesCount,
   GetUsedVehiclesCount,
-  createVehicle,
+  CreateVehicle,
+  GetLastAddedVehicle,
 } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import { VehicleData } from '../types/vehicleData';
 
 const Home = () => {
-  const { data: vehicleCount } = GetVehicleCount();
-  const { data: newVehiclesCount } = GetNewVehiclesCount();
-  const { data: usedVehiclesCount } = GetUsedVehiclesCount();
+  const { data: vehicleCount, refetch: refetchVehicleCount } =
+    GetVehicleCount();
+  const { data: newVehiclesCount, refetch: refetchNewVehiclesCount } =
+    GetNewVehiclesCount();
+  const { data: usedVehiclesCount, refetch: refetchUsedVehiclesCount } =
+    GetUsedVehiclesCount();
+  const { data: lastVehicles, refetch: refetchLastVehicles } =
+    GetLastAddedVehicle();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const createVehicleMutation = createVehicle();
+  const createVehicleMutation = CreateVehicle();
 
   const handleAddVehicle = async (formData: VehicleData) => {
     try {
@@ -27,9 +33,12 @@ const Home = () => {
       } as VehicleData);
 
       setIsAddModalOpen(false);
-      GetVehicleCount();
-      GetNewVehiclesCount();
-      GetUsedVehiclesCount();
+      await Promise.all([
+        refetchVehicleCount(),
+        refetchNewVehiclesCount(),
+        refetchUsedVehiclesCount(),
+        refetchLastVehicles(),
+      ]);
     } catch (error) {
       console.error("Erreur lors de l'ajout du véhicule:", error);
     }
@@ -122,15 +131,32 @@ const Home = () => {
                 <div className="space-y-3">
                   <div className="p-3 hover:bg-gray-50 rounded-lg transition-colors">
                     <div className="flex justify-between items-center">
-                      <div>
-                        <p className="font-medium">Peugeot 208</p>
-                        <p className="text-sm text-gray-500">
-                          2022 • 25 000 km • 15 900€
-                        </p>
+                      <div className="w-full">
+                        {lastVehicles?.map((vehicle) => (
+                          <div className="p-3 hover:bg-gray-50 rounded-lg transition-colors flex justify-between items-center w-full">
+                            <div className="flex flex-col">
+                              <p className="font-medium">
+                                {vehicle.brand} {vehicle.model}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                {vehicle.year} • {vehicle.mileage} km •{' '}
+                                {vehicle.price}
+                              </p>
+                            </div>
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full ${
+                                vehicle.condition === 'new'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}
+                            >
+                              {vehicle.condition === 'new'
+                                ? 'Neuf'
+                                : 'Occasion'}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                        Occasion
-                      </span>
                     </div>
                   </div>
                 </div>

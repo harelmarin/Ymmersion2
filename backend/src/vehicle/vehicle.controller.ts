@@ -41,6 +41,12 @@ export class VehicleController {
     return this.vehicleService.getUsedVehiclesCount();
   }
 
+  @Get('last-added')
+  @ApiOperation({ summary: 'Récupérer le dernier véhicule ajouté' })
+  getLastAddedVehicle() {
+    return this.vehicleService.getLastAddedVehicles();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les véhicules' })
   findAll() {

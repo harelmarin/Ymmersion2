@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import {
   fetchAllVehicle,
-  createVehicle,
+  CreateVehicle,
   updateVehicle,
   DeleteVehicle,
 } from '../services/vehicleService';
@@ -11,7 +11,7 @@ import EditVehiclesForm from '../components/form/EditVehiclesForm';
 import { VehicleData } from '../types/vehicleData';
 const Vehicles = () => {
   const { data: vehicles, isLoading, refetch } = fetchAllVehicle();
-  const createVehicleMutation = createVehicle();
+  const createVehicleMutation = CreateVehicle();
   const updateVehicleMutation = updateVehicle();
   const deleteVehicleMutation = DeleteVehicle();
   const [searchTerm, setSearchTerm] = useState('');
@@ -222,7 +222,7 @@ const Vehicles = () => {
                     </div>
                     <div className="flex space-x-2">
                       <button
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors hover:cursor-pointer"
                         onClick={() => {
                           setSelectedVehicle(vehicle);
                           setIsEditModalOpen(true);
@@ -249,7 +249,7 @@ const Vehicles = () => {
                         </svg>
                       </button>
                       <button
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors "
                         onClick={() => handledeleteVehicle(vehicle.id)}
                       >
                         <svg
