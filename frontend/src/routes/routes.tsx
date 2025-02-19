@@ -10,6 +10,7 @@ import Dashboard from '../pages/Dashboard';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import Profile from '../pages/Profile';
 import TransactionHistory from '../pages/TransactionHistory';
+import VehicleDetails from '../pages/VehicleDetails';
 
 const AppRoutes = () => {
   return (
@@ -38,6 +39,10 @@ const AppRoutes = () => {
         <Route
           path="/profile"
           element={<PrivateRoute element={<Profile />} />}
+        />
+        <Route
+          path="/vehicles/:id"
+          element={<PrivateRoute element={<VehicleDetails />} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

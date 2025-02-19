@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import EditVehiclesForm from '../form/EditVehiclesForm';
 import { VehicleData } from '../../types/vehicleData';
 import { getAllVehicleOptions } from '../../services/vehicleService';
 
 const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCardClick = (e) => {
+    // Évite la navigation si on clique sur les boutons d'édition/suppression
+    if (e.target.closest('button')) return;
+    navigate(`/vehicles/${vehicle.id}`);
+  };
 
   const handleEditSubmit = async (data: VehicleData) => {
     await onEdit(data);
@@ -12,7 +20,10 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-4 hover:shadow-xl transition-all">
+    <div
+      className="bg-white rounded-lg shadow-lg p-6 mb-4 hover:shadow-xl transition-all cursor-pointer"
+      onClick={handleCardClick}
+    >
       {!isEditing ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-4">
@@ -59,11 +70,10 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
               <div>
                 <p className="text-sm text-gray-600">État</p>
                 <span
-                  className={`inline-block px-2 py-1 text-xs rounded-full ${
-                    vehicle.condition === 'new'
+                  className={`inline-block px-2 py-1 text-xs rounded-full ${vehicle.condition === 'new'
                       ? 'bg-green-100 text-green-800'
                       : 'bg-blue-100 text-blue-800'
-                  }`}
+                    }`}
                 >
                   {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
                 </span>
@@ -71,11 +81,10 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
               <div>
                 <p className="text-sm text-gray-600">Location</p>
                 <span
-                  className={`inline-block px-2 py-1 text-xs rounded-full ${
-                    vehicle.isRental
+                  className={`inline-block px-2 py-1 text-xs rounded-full ${vehicle.isRental
                       ? 'bg-purple-100 text-purple-800'
                       : 'bg-gray-100 text-gray-800'
-                  }`}
+                    }`}
                 >
                   {vehicle.isRental ? 'Oui' : 'Non'}
                 </span>

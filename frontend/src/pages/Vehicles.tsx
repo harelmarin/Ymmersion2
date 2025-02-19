@@ -1,15 +1,15 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
-import VehicleCard from '../components/card/VehicleCard';
-import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import {
   fetchAllVehicle,
   CreateVehicle,
   updateVehicle,
   DeleteVehicle,
 } from '../services/vehicleService';
+import AddVehiclesForm from '../components/form/AddVehiclesForm';
+import VehicleCard from '../components/card/VehicleCard';
 import { VehicleData } from '../types/vehicleData';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Vehicles = () => {
   const { data: vehicles, isLoading, refetch } = fetchAllVehicle();
@@ -24,9 +24,6 @@ const Vehicles = () => {
   const [rentalFilter, setRentalFilter] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState<VehicleData | null>(
-    null,
-  );
 
   const filteredVehicles = useMemo(() => {
     if (!vehicles) return [];
@@ -110,13 +107,11 @@ const Vehicles = () => {
   const handleAddVehicle = async (formData: VehicleData) => {
     try {
       const { id, ...vehicleDataWithoutId } = formData;
-
       await createVehicleMutation.mutateAsync({
         ...vehicleDataWithoutId,
         available: true,
         addedAt: new Date().toISOString(),
       } as VehicleData);
-
       setIsAddModalOpen(false);
       refetch();
     } catch (error) {
@@ -127,7 +122,6 @@ const Vehicles = () => {
   const handleEditVehicle = async (updatedVehicle: VehicleData) => {
     try {
       await updateVehicleMutation.mutateAsync(updatedVehicle);
-      setSelectedVehicle(null);
       refetch();
     } catch (error) {
       console.error('Erreur lors de la modification du véhicule:', error);
