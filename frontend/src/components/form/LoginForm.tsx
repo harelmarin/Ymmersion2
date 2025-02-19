@@ -41,7 +41,7 @@ const LoginForm = () => {
     if (validateForm()) {
       try {
         await loginMutation.mutateAsync(formData);
-        navigate('/index');
+        navigate('/');
       } catch (error) {
         setServerError(
           error instanceof Error ? error.message : 'Une erreur est survenue',

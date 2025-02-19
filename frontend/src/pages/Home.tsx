@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Statistics from '../components/common/Statistcs';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 import { CreateVehicle, GetLastAddedVehicle } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import { VehicleData } from '../types/vehicleData';

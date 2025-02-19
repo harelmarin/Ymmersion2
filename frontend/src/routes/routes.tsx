@@ -17,8 +17,7 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        { }
-        <Route path="/index" element={<PrivateRoute element={<Index />} />} />
+        <Route path="/" element={<PrivateRoute element={<Index />} />} />
         <Route
           path="/vehicles"
           element={<PrivateRoute element={<Vehicles />} />}

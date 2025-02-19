@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 import { fetchVehicle } from '../services/vehicleService';
 import { VehicleData } from '../types/vehicleData';
 import SaleButton from '../components/common/SaleButton';

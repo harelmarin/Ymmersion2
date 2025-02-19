@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../features/auth/authContext';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 import { UserPen, KeyRound, Check, X } from 'lucide-react';
 import { ProfileService, UserData } from '../services/profileService';
 
@@ -57,7 +57,8 @@ const Profile = () => {
   });
 
   const uploadPictureMutation = useMutation({
-    mutationFn: (file: File) => ProfileService.uploadProfilePicture(userId!, file),
+    mutationFn: (file: File) =>
+      ProfileService.uploadProfilePicture(userId!, file),
     onSuccess: () => {
       if (userId) {
         queryClient.invalidateQueries({ queryKey: ['profile', userId] });
@@ -65,7 +66,10 @@ const Profile = () => {
       setSelectedFile(null);
     },
     onError: (error) => {
-      console.error('Erreur lors de la mise à jour de la photo de profil :', error);
+      console.error(
+        'Erreur lors de la mise à jour de la photo de profil :',
+        error,
+      );
     },
   });
 
@@ -156,7 +160,12 @@ const Profile = () => {
                     />
                   </svg>
                 </button>
-                <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileChange} />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
               </div>
             </div>
 
@@ -208,7 +217,9 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-600 font-medium">Email</label>
+                  <label className="block text-gray-600 font-medium">
+                    Email
+                  </label>
                   {isEditing ? (
                     <input
                       type="email"
@@ -223,7 +234,9 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-600 font-medium">Téléphone</label>
+                  <label className="block text-gray-600 font-medium">
+                    Téléphone
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -234,13 +247,19 @@ const Profile = () => {
                     />
                   ) : (
                     <p className="text-gray-800">
-                      {userData.phone ? userData.phone : <span className="text-gray-500">Non renseigné</span>}
+                      {userData.phone ? (
+                        userData.phone
+                      ) : (
+                        <span className="text-gray-500">Non renseigné</span>
+                      )}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-gray-600 font-medium">Adresse</label>
+                  <label className="block text-gray-600 font-medium">
+                    Adresse
+                  </label>
                   {isEditing ? (
                     <input
                       type="text"
@@ -251,7 +270,11 @@ const Profile = () => {
                     />
                   ) : (
                     <p className="text-gray-800">
-                      {userData.address ? userData.address : <span className="text-gray-500">Non renseignée</span>}
+                      {userData.address ? (
+                        userData.address
+                      ) : (
+                        <span className="text-gray-500">Non renseignée</span>
+                      )}
                     </p>
                   )}
                 </div>

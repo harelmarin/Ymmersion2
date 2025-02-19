@@ -1,10 +1,20 @@
-import React from 'react';
-import { useLogout } from '../services/authService';
+import React, { useState } from 'react';
+import { useLogout } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import {
+  useSearchClients,
+  useSearchVehicles,
+} from '../../services/searchService';
+import SearchResults from './SearchResults';
 
 const Navbar = () => {
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showResults, setShowResults] = useState(false);
+
+  const { data: clients } = useSearchClients(searchTerm);
+  const { data: vehicles } = useSearchVehicles(searchTerm);
 
   const handleLogout = () => {
     logout();
@@ -16,17 +26,23 @@ const Navbar = () => {
       <div className="w-[75%] mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex items-center">
-            <a href="/index">
+            <a href="/">
               <h2 className="text-xl font-bold text-gray-800">
                 Garage la Phocéenne
               </h2>
             </a>
           </div>
 
-          <div className="flex-1 max-w-lg mx-4">
+          <div className="flex-1 max-w-lg mx-4 relative">
             <div className="relative">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowResults(true);
+                }}
+                onFocus={() => setShowResults(true)}
                 placeholder="Rechercher un client ou un véhicule..."
                 className="w-full px-4 py-2 text-gray-700 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
               />
@@ -44,6 +60,15 @@ const Navbar = () => {
                 </svg>
               </button>
             </div>
+
+            {showResults && (
+              <SearchResults
+                searchTerm={searchTerm}
+                clients={clients}
+                vehicles={vehicles}
+                onClose={() => setShowResults(false)}
+              />
+            )}
           </div>
 
           <div className="flex items-center space-x-4">

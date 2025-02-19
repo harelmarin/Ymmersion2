@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 import {
   fetchAllVehicle,
   CreateVehicle,
