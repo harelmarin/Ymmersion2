@@ -27,11 +27,14 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  const handleViewTransactionHistory = async (id: string) => {
+    navigate(`/transaction/user/${id}`);
+  };
+
   if (!searchTerm) return null;
 
   return (
     <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 max-h-96 overflow-y-auto z-50">
-      {/* Clients */}
       {clients && clients.length > 0 && (
         <div className="p-4">
           <h3 className="text-sm font-semibold text-gray-500 mb-2">Clients</h3>
@@ -40,7 +43,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               <div
                 key={client.id}
                 onClick={() => {
-                  navigate(`/clients/${client.id}`);
+                  handleViewTransactionHistory(client.id.toString());
                   onClose();
                 }}
                 className="flex items-center justify-between p-2 hover:bg-blue-50 rounded-lg cursor-pointer"
@@ -72,7 +75,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         </div>
       )}
 
-      {/* Véhicules */}
       {vehicles && vehicles.length > 0 && (
         <div className="p-4 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-gray-500 mb-2">
