@@ -47,6 +47,19 @@ export class VehicleController {
     return this.vehicleService.getLastAddedVehicles();
   }
 
+  @Get('vehicle-options')
+  @ApiOperation({ summary: 'Récupérer les options de véhicules' })
+  getVehicleOptions() {
+    return this.vehicleService.getAllVehicleOptions();
+  }
+
+  @Get('vehicle-options/:id')
+  @ApiOperation({ summary: "Récupérer les options d'un véhicule par ID" })
+  @ApiParam({ name: 'id', example: 1, description: 'ID du véhicule' })
+  getVehicleOptionsById(@Param('id') id: string) {
+    return this.vehicleService.getVehicleOptions(+id);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les véhicules' })
   findAll() {

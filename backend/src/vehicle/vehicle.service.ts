@@ -215,4 +215,30 @@ export class VehicleService {
       throw error;
     }
   }
+
+  async getAllVehicleOptions() {
+    try {
+      const options = await this.prismaService.vehicleOption.findMany();
+      return options;
+    } catch (error) {
+      console.error('Error fetching all vehicle options:', error);
+      throw error;
+    }
+  }
+
+  async getVehicleOptions(id: number) {
+    try {
+      const vehicle = await this.prismaService.vehicle.findUnique({
+        where: { id },
+        include: {
+          options: true,
+        },
+      });
+
+      return vehicle.options;
+    } catch (error) {
+      console.error('Error fetching vehicle options:', error);
+      throw error;
+    }
+  }
 }

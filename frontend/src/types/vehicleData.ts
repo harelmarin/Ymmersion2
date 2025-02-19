@@ -20,3 +20,8 @@ export type VehicleData = {
   available: boolean;
   addedAt: string;
 };
+
+export type VehicleOption = {
+  id: number;
+  name: string;
+};

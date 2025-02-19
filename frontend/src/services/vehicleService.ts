@@ -59,6 +59,14 @@ export const VehicleService = {
   getLastAddedVehicles: async (): Promise<VehicleData[]> => {
     return apiClient<VehicleData[]>('/vehicle/last-added');
   },
+
+  getAllVehicleOptions: async (): Promise<VehicleData[]> => {
+    return apiClient<VehicleData[]>('/vehicle/vehicle-options');
+  },
+
+  getVehicleOptions: async (vehicleId: string): Promise<any[]> => {
+    return apiClient<any[]>(`/vehicle/vehicle-options/${vehicleId}`);
+  },
 };
 
 export const fetchAllVehicle = () => {
@@ -93,7 +101,7 @@ export const CreateVehicle = () => {
 export const updateVehicle = () => {
   return useMutation<VehicleData, Error, VehicleData>({
     mutationFn: (data: VehicleData) =>
-      VehicleService.updateVehicle(data.id.toString(), data),
+      VehicleService.updateVehicle(data.id?.toString() || '', data),
   });
 };
 
@@ -128,5 +136,19 @@ export const GetLastAddedVehicle = () => {
   return useQuery<VehicleData[]>({
     queryKey: ['lastAddedVehicles'],
     queryFn: VehicleService.getLastAddedVehicles,
+  });
+};
+
+export const getAllVehicleOptions = () => {
+  return useQuery<VehicleData[]>({
+    queryKey: ['vehicleOptions'],
+    queryFn: VehicleService.getAllVehicleOptions,
+  });
+};
+
+export const getVehicleOptions = (id: string) => {
+  return useQuery<VehicleData[]>({
+    queryKey: ['vehicleOptions', id],
+    queryFn: () => VehicleService.getVehicleOptions(id),
   });
 };

@@ -10,7 +10,6 @@ import { ClientData } from '../types/clientData';
 import RecentVehicle from '../components/common/RecentVehicle';
 import RecentTransaction from '../components/common/RecentTransaction';
 
-
 const Home = () => {
   const { data: lastVehicles, refetch: refetchLastVehicles } =
     GetLastAddedVehicle();
