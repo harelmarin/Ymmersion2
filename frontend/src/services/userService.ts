@@ -1,16 +1,19 @@
-export const getUserById = async (id: string) => {
-    try {
-      const response = await fetch(`http://localhost:3000/user/${id}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des données utilisateur');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+import { UserData } from '../types/userData';
+import { apiClient } from './api/apiClient';
+import { useQuery, useMutation } from '@tanstack/react-query';
+
+  export const UserService = {
+    getUserById: async (id: string): Promise<UserData> => {
+      return apiClient<UserData>(`/user/${id}`);
+    },
+  }
+
+  export const getUserById = (id: string, p0: { enabled: boolean; }) => {
+    return useQuery<UserData>({
+      queryKey: ['user', id],
+      queryFn: () => UserService.getUserById(id),
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    });
   };
   

@@ -10,9 +10,10 @@ import { InvoiceModule } from './invoice/invoice.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { FileModule } from './files/files.module';
 
 @Module({
-  imports: [PrismaClient, VehicleModule, UserModule, ClientModule, TransactionModule, AuthModule, RoleModule, InvoiceModule, StatisticsModule],
+  imports: [PrismaClient, VehicleModule, UserModule, ClientModule, TransactionModule, AuthModule, RoleModule, InvoiceModule, StatisticsModule, FileModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
+  ParseIntPipe, 
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import { extname } from "path";
 
 @ApiTags('users')
 @Controller('user')
@@ -29,6 +34,29 @@ export class UserController {
   async getUserById(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.getUserById(id);
   }
+
+  @Post(":id/upload")
+  @UseInterceptors(
+    FileInterceptor("file", {
+      storage: diskStorage({
+        destination: "./uploads",
+        filename: (req, file, callback) => {
+          const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          callback(null, `${req.params.id}-${uniqueSuffix}${ext}`);
+        },
+      }),
+    })
+  )
+  async uploadProfilePic(
+    @Param("id", ParseIntPipe) id: number,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    if (!file) {
+      throw new Error("File is not uploaded.");
+    }
+    return this.userService.updateProfilePic(id, file.filename);
+}
 
   @Patch(':id')
   @ApiOperation({ summary: 'Mettre à jour un utilisateur par ID' })

@@ -34,6 +34,13 @@ export class UserService {
     }
   }
 
+  async updateProfilePic(id: number, profilePic: string) {
+    return this.prisma.user.update({
+      where: { id: id },
+      data: { profile_pic: profilePic },
+    });
+  }
+
   async UpdateUser(id: number, data: UpdateUserDto): Promise<User> {
     try {
       return await this.prisma.user.update({

@@ -12,7 +12,8 @@ model User {
   name         String
   email        String   @unique
   phone        String?  
-  address      String?  
+  address      String?
+  profile_pic  String?
   password     String?  
   role         Role     @default(employee)
   active       Boolean  @default(true) 
