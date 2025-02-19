@@ -22,7 +22,6 @@ const VehicleCard = ({ vehicle, onEdit, onDelete }) => {
     <div className="bg-white rounded-lg shadow-lg p-6 mb-4 hover:shadow-xl transition-all">
       {!isEditing ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Colonne 1: Informations principales */}
           <div className="space-y-4">
             <div>
               <h3 className="text-2xl font-bold text-gray-800">
@@ -344,7 +343,6 @@ const Vehicles = () => {
 
             <div className="bg-white p-4 rounded-lg shadow-md mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-    
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Recherche
@@ -376,7 +374,6 @@ const Vehicles = () => {
                   </select>
                 </div>
 
-             
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     État
@@ -392,7 +389,6 @@ const Vehicles = () => {
                   </select>
                 </div>
 
-             
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Location
@@ -408,7 +404,6 @@ const Vehicles = () => {
                   </select>
                 </div>
 
-         
                 <div className="flex space-x-2">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -446,7 +441,6 @@ const Vehicles = () => {
                   </div>
                 </div>
 
-           
                 <div className="flex space-x-2">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -484,7 +478,6 @@ const Vehicles = () => {
                   </div>
                 </div>
 
-       
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Trier par

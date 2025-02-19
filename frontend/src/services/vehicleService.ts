@@ -93,7 +93,7 @@ export const CreateVehicle = () => {
 export const updateVehicle = () => {
   return useMutation<VehicleData, Error, VehicleData>({
     mutationFn: (data: VehicleData) =>
-      VehicleService.updateVehicle(data.id, data),
+      VehicleService.updateVehicle(data.id.toString(), data),
   });
 };
 

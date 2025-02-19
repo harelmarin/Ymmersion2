@@ -119,7 +119,6 @@ export class VehicleService {
         }
       }
 
-      // Mettre à jour le véhicule
       const updatedVehicle = await this.prismaService.vehicle.update({
         where: { id },
         data: validFields,
@@ -142,15 +141,25 @@ export class VehicleService {
     }
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     try {
-      const deletedVehicle = this.prismaService.vehicle.delete({
+      await this.prismaService.vehicleOption.deleteMany({
+        where: { vehicleId: id },
+      });
+
+      const deletedVehicle = await this.prismaService.vehicle.delete({
         where: { id },
+        include: {
+          options: true,
+        },
       });
 
       return deletedVehicle;
     } catch (error) {
-      throw new Error(error);
+      console.error('Erreur détaillée:', error);
+      throw new Error(
+        `Erreur lors de la suppression du véhicule: ${error.message}`,
+      );
     }
   }
 
