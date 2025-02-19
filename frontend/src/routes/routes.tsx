@@ -11,6 +11,7 @@ import PrivateRoute from '../components/auth/PrivateRoute';
 import Profile from '../pages/Profile';
 import TransactionHistory from '../pages/TransactionHistory';
 import VehicleDetails from '../pages/VehicleDetails';
+import Transaction from '../pages/Transaction';
 
 const AppRoutes = () => {
   return (
@@ -35,6 +36,10 @@ const AppRoutes = () => {
         <Route
           path="/transaction/user/:id"
           element={<PrivateRoute element={<TransactionHistory />} />}
+        />
+        <Route
+          path="/transaction/new/:vehicleId"
+          element={<PrivateRoute element={<Transaction />} />}
         />
         <Route
           path="/profile"
