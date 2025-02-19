@@ -10,16 +10,23 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
   onCancel,
 }) => {
   const [formData, setFormData] = useState<VehicleData>({
-    id: '',
     brand: '',
     model: '',
-    year: new Date().getFullYear(),
+    version: '',
+    color: '',
+    vin: '',
+    internalId: '',
     mileage: 0,
+    licensePlate: '',
+    fees: 0,
     price: 0,
     purchasePrice: 0,
+    img: '',
+    isRental: false,
+    options: [],
     condition: 'used',
     available: true,
-    addedAt: new Date().toISOString(),
+    addedAt: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -52,141 +59,234 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label
-            htmlFor="brand"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Marque
           </label>
-          <select
-            id="brand"
+          <input
+            type="text"
             name="brand"
             value={formData.brand}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
-          >
-            <option value="">Sélectionner une marque</option>
-            <option value="peugeot">Peugeot</option>
-            <option value="renault">Renault</option>
-            <option value="citroen">Citroën</option>
-            <option value="toyota">Toyota</option>
-          </select>
+          />
         </div>
 
         <div>
-          <label
-            htmlFor="model"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Modèle
           </label>
           <input
             type="text"
-            id="model"
             name="model"
             value={formData.model}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="year"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Année
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Version
           </label>
           <input
-            type="number"
-            id="year"
-            name="year"
-            value={formData.year}
+            type="text"
+            name="version"
+            value={formData.version}
             onChange={handleChange}
-            min="1900"
-            max={new Date().getFullYear()}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="mileage"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Couleur
+          </label>
+          <input
+            type="text"
+            name="color"
+            value={formData.color}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Numéro VIN
+          </label>
+          <input
+            type="text"
+            name="vin"
+            value={formData.vin}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Matricule
+          </label>
+          <input
+            type="text"
+            name="internalId"
+            value={formData.internalId}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Kilométrage
           </label>
           <input
             type="number"
-            id="mileage"
             name="mileage"
             value={formData.mileage}
             onChange={handleChange}
-            min="0"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="price"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Prix de vente
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Immatriculation
           </label>
           <input
-            type="number"
-            id="price"
-            name="price"
-            value={formData.price}
+            type="text"
+            name="licensePlate"
+            value={formData.licensePlate}
             onChange={handleChange}
-            min="0"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           />
         </div>
+
         <div>
-          <label
-            htmlFor="purchasePrice"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Frais
+          </label>
+          <input
+            type="number"
+            name="fees"
+            value={formData.fees}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Prix
+          </label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Prix d'achat
           </label>
           <input
             type="number"
-            id="purchasePrice"
             name="purchasePrice"
             value={formData.purchasePrice}
             onChange={handleChange}
-            min="0"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           />
         </div>
 
-
         <div>
-          <label
-            htmlFor="condition"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             État
           </label>
           <select
-            id="condition"
             name="condition"
             value={formData.condition}
             onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
             required
           >
             <option value="new">Neuf</option>
             <option value="used">Occasion</option>
           </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Location
+          </label>
+          <input
+            type="checkbox"
+            name="isRental"
+            checked={formData.isRental}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, isRental: e.target.checked }))
+            }
+            className="mt-2"
+          />
+        </div>
+
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Options
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {formData.options.map((option, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => {
+                    const newOptions = [...formData.options];
+                    newOptions[index] = e.target.value;
+                    setFormData((prev) => ({ ...prev, options: newOptions }));
+                  }}
+                  className="px-2 py-1 border rounded"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      options: prev.options.filter((_, i) => i !== index),
+                    }));
+                  }}
+                  className="text-red-500"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setFormData((prev) => ({
+                  ...prev,
+                  options: [...prev.options, ''],
+                }));
+              }}
+              className="px-2 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
+            >
+              + Ajouter une option
+            </button>
+          </div>
         </div>
       </div>
 
@@ -194,43 +294,15 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          disabled={isSubmitting}
-          className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+          className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
         >
           Annuler
         </button>
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
-          {isSubmitting ? (
-            <>
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Ajout en cours...
-            </>
-          ) : (
-            'Ajouter le véhicule'
-          )}
+          Ajouter le véhicule
         </button>
       </div>
     </form>

@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import Statistics from '../components/common/Statistcs';
 import Navbar from '../components/Navbar';
-import {
-  CreateVehicle,
-  GetLastAddedVehicle,
-} from '../services/vehicleService';
+import { CreateVehicle, GetLastAddedVehicle } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
 import { VehicleData } from '../types/vehicleData';
-import {
-  GetLastAddedClient,
-  CreateClient,
-} from '../services/clientService';
+import { GetLastAddedClient, CreateClient } from '../services/clientService';
 import AddClientForm from '../components/form/AddClientForm';
 import { ClientData } from '../types/clientData';
 const Home = () => {
@@ -34,9 +28,7 @@ const Home = () => {
       } as VehicleData);
 
       setIsAddModalOpen(false);
-      await Promise.all([
-        refetchLastVehicles(),
-      ]);
+      await Promise.all([refetchLastVehicles()]);
     } catch (error) {
       console.error("Erreur lors de l'ajout du véhicule:", error);
     }
@@ -87,7 +79,9 @@ const Home = () => {
                   {lastVehicles?.map((vehicle, index) => (
                     <div
                       key={vehicle.id}
-                      style={{ backgroundColor: index % 2 === 0 ? "#F2F6FE" : "white" }}
+                      style={{
+                        backgroundColor: index % 2 === 0 ? '#F2F6FE' : 'white',
+                      }}
                       className="shadow-sm hover:shadow-md transition-all duration-200 p-4 "
                     >
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
@@ -96,16 +90,20 @@ const Home = () => {
                             {vehicle.brand} {vehicle.model}
                           </p>
                           <p className="text-sm text-gray-500">
-                            {vehicle.year} • {vehicle.mileage.toLocaleString()} km
+                            {vehicle.mileage.toLocaleString()} km
                           </p>
                         </div>
 
                         <div className="flex flex-col">
                           <p className="text-sm text-gray-500">Prix :</p>
-                          <p className="text-lg font-semibold text-gray-900">{vehicle.price}€</p>
+                          <p className="text-lg font-semibold text-gray-900">
+                            {vehicle.price}€
+                          </p>
                         </div>
                         <div className="flex flex-col">
-                          <p className="text-sm text-gray-500">Prix d'achat :</p>
+                          <p className="text-sm text-gray-500">
+                            Prix d'achat :
+                          </p>
                           <p className="text-lg font-semibold text-gray-900 blur-sm hover:blur-none transition-all">
                             {vehicle.purchasePrice}€
                           </p>
@@ -114,7 +112,11 @@ const Home = () => {
                         <div className="flex justify-end">
                           <span
                             className={`text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap 
-              ${vehicle.condition === 'new' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}
+              ${
+                vehicle.condition === 'new'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-blue-100 text-blue-700'
+              }`}
                           >
                             {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
                           </span>
@@ -137,29 +139,85 @@ const Home = () => {
                 </div>
                 <div className="divide-y divide-gray-200">
                   {lastVehicles?.map((vehicle) => (
-                    <div key={vehicle.id} className="py-3">
-                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium">
-                              {vehicle.brand} {vehicle.model}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {vehicle.year} • {vehicle.mileage} km •{' '}
-                              {vehicle.price}€{' PA:'}
-                              <span className="blur-sm hover:blur-none">
-                                {vehicle.purchasePrice}€
-                              </span>
-                            </p>
-                          </div>
-                          <span
-                            className={`text-xs px-2 py-1 rounded-full ${vehicle.condition === 'new'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-blue-100 text-blue-800'
+                    <div key={vehicle.id} className="py-4">
+                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-4">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h4 className="text-lg font-semibold text-gray-800">
+                                {vehicle.brand} {vehicle.model}
+                              </h4>
+                              <p className="text-sm text-gray-600">
+                                {vehicle.version}
+                              </p>
+                            </div>
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full ${
+                                vehicle.condition === 'new'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-blue-100 text-blue-800'
                               }`}
-                          >
-                            {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
-                          </span>
+                            >
+                              {vehicle.condition === 'new'
+                                ? 'Neuf'
+                                : 'Occasion'}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-sm text-gray-500">
+                                Kilométrage
+                              </p>
+                              <p className="font-medium">
+                                {vehicle.mileage.toLocaleString()} km
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-500">Prix</p>
+                              <p className="font-medium text-blue-600">
+                                {vehicle.price.toLocaleString()} €
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-gray-500">VIN: </span>
+                              <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded">
+                                {vehicle.vin}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Plaque: </span>
+                              <span className="font-mono bg-blue-50 px-1.5 py-0.5 rounded text-blue-700">
+                                {vehicle.licensePlate}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <div className="flex flex-wrap gap-1">
+                              {vehicle.options?.map((option, index) => (
+                                <span
+                                  key={index}
+                                  className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                                >
+                                  {option}
+                                </span>
+                              ))}
+                            </div>
+                            <div className="flex gap-2">
+                              {vehicle.isRental && (
+                                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                  Location
+                                </span>
+                              )}
+                              <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                {new Date(vehicle.addedAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

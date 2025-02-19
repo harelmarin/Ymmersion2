@@ -7,46 +7,74 @@ import {
   IsEnum,
   Min,
   Max,
+  IsNumber,
+  IsOptional,
 } from 'class-validator';
 import { Condition } from '../enum/condition.enum';
 
 export class CreateVehicleDto {
-  @ApiProperty({ example: 'Toyota', description: 'Marque du véhicule' })
+  @ApiProperty({ example: 'Toyota' })
   @IsString()
   brand: string;
 
-  @ApiProperty({ example: 'Corolla', description: 'Modèle du véhicule' })
+  @ApiProperty({ example: 'Corolla' })
   @IsString()
   model: string;
 
-  @ApiProperty({ example: 2022, description: 'Année de fabrication' })
-  @IsInt()
-  @Min(1886)
-  @Max(new Date().getFullYear())
-  year: number;
+  @ApiProperty({ example: 'Hybrid 122h' })
+  @IsString()
+  version: string;
 
-  @ApiProperty({ example: 50000, description: 'Kilométrage du véhicule' })
-  @IsInt()
-  @Min(0)
+  @ApiProperty({ example: 'Noir Métallisé' })
+  @IsString()
+  color: string;
+
+  @ApiProperty({ example: 'JTDDH3FH503006789' })
+  @IsString()
+  vin: string;
+
+  @ApiProperty({ example: 'ABC123' })
+  @IsString()
+  internalId: string;
+
+  @ApiProperty({ example: 50000 })
+  @IsNumber()
   mileage: number;
 
-  @ApiProperty({ example: 25000.99, description: 'Prix du véhicule' })
-  @IsDecimal()
+  @ApiProperty({ example: 'AA-123-BB' })
+  @IsString()
+  licensePlate: string;
+
+  @ApiProperty({ example: 1500 })
+  @IsNumber()
+  fees: number;
+
+  @ApiProperty({ example: 25000 })
+  @IsNumber()
   price: number;
 
-  @ApiProperty({
-    example: 'used',
-    enum: Condition,
-    description: 'État du véhicule',
-  })
+  @ApiProperty({ example: 23000 })
+  @IsNumber()
+  purchasePrice: number;
+
+  @ApiProperty({ example: 'https://example.com/image.jpg' })
+  @IsString()
+  img: string;
+
+  @ApiProperty({ example: false })
+  @IsBoolean()
+  isRental: boolean;
+
+  @ApiProperty({ example: ['GPS', 'Toit ouvrant'] })
+  @IsString({ each: true })
+  @IsOptional()
+  options?: string[];
+
+  @ApiProperty({ example: 'used', enum: Condition })
   @IsEnum(Condition)
   condition: Condition;
 
-  @ApiProperty({ example: true, description: 'Disponibilité du véhicule' })
+  @ApiProperty({ example: true })
   @IsBoolean()
   available: boolean;
-
-  @ApiProperty({ example: 23000.50, description: 'Prix d\'achat du véhicule' })
-  @IsDecimal()
-  purchasePrice: number;
 }

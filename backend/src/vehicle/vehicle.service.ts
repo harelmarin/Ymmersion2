@@ -9,14 +9,49 @@ export class VehicleService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(createVehicleDto: CreateVehicleDto) {
+    const { options, ...vehicleData } = createVehicleDto;
+
+    const validFields = {
+      brand: vehicleData.brand,
+      model: vehicleData.model,
+      version: vehicleData.version,
+      color: vehicleData.color,
+      vin: vehicleData.vin,
+      internalId: vehicleData.internalId,
+      mileage: Number(vehicleData.mileage),
+      licensePlate: vehicleData.licensePlate,
+      fees: Number(vehicleData.fees),
+      price: Number(vehicleData.price),
+      purchasePrice: Number(vehicleData.purchasePrice),
+      img: vehicleData.img,
+      isRental: vehicleData.isRental,
+      condition: vehicleData.condition,
+      available: vehicleData.available,
+    };
+
     try {
       const vehicle = await this.prismaService.vehicle.create({
-        data: createVehicleDto,
+        data: {
+          ...validFields,
+          options: {
+            create: options?.map((name) => ({ name })) || [],
+          },
+        },
+        include: {
+          options: true,
+        },
       });
-
       return vehicle;
     } catch (error) {
-      throw new Error(error);
+      console.error('Erreur détaillée:', error);
+      if (error.code === 'P2002') {
+        throw new Error(
+          'Un véhicule avec ce VIN, matricule ou plaque existe déjà',
+        );
+      }
+      throw new Error(
+        `Erreur lors de la création du véhicule: ${error.message}`,
+      );
     }
   }
 
@@ -44,16 +79,66 @@ export class VehicleService {
     return vehicle;
   }
 
-  update(id: number, updateVehicleDto: UpdateVehicleDto) {
+  async update(id: number, updateVehicleDto: UpdateVehicleDto) {
+    const { options, ...vehicleData } = updateVehicleDto;
+
     try {
-      const updatedVehicle = this.prismaService.vehicle.update({
+      console.log('Données reçues:', { id, updateVehicleDto });
+
+      const validFields = {
+        brand: vehicleData.brand,
+        model: vehicleData.model,
+        version: vehicleData.version,
+        color: vehicleData.color,
+        vin: vehicleData.vin,
+        internalId: vehicleData.internalId,
+        mileage: vehicleData.mileage ? Number(vehicleData.mileage) : undefined,
+        licensePlate: vehicleData.licensePlate,
+        fees: vehicleData.fees ? Number(vehicleData.fees) : undefined,
+        price: vehicleData.price ? Number(vehicleData.price) : undefined,
+        purchasePrice: vehicleData.purchasePrice
+          ? Number(vehicleData.purchasePrice)
+          : undefined,
+        isRental: vehicleData.isRental,
+        condition: vehicleData.condition,
+        available: vehicleData.available,
+      };
+
+      if (options) {
+        await this.prismaService.vehicleOption.deleteMany({
+          where: { vehicleId: id },
+        });
+
+        if (options.length > 0) {
+          await this.prismaService.vehicleOption.createMany({
+            data: options.map((name) => ({
+              name,
+              vehicleId: id,
+            })),
+          });
+        }
+      }
+
+      // Mettre à jour le véhicule
+      const updatedVehicle = await this.prismaService.vehicle.update({
         where: { id },
-        data: updateVehicleDto,
+        data: validFields,
+        include: {
+          options: true,
+        },
       });
 
       return updatedVehicle;
     } catch (error) {
-      throw new Error(error);
+      console.error('Erreur détaillée lors de la mise à jour:', error);
+      if (error.code === 'P2002') {
+        throw new Error(
+          'Un véhicule avec ce VIN, matricule ou plaque existe déjà',
+        );
+      }
+      throw new Error(
+        `Erreur lors de la mise à jour du véhicule: ${error.message}`,
+      );
     }
   }
 

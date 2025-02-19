@@ -29,18 +29,26 @@ enum Role {
 }
 
 model Vehicle {
-  id         Int      @id @default(autoincrement())
-  brand      String
-  model      String
-  year       Int
-  mileage    Int
-  price      Decimal
-  purchasePrice Decimal
-  condition  Condition
-  available  Boolean @default(true)
-  addedAt    DateTime @default(now())
+  id            Int         @id @default(autoincrement())
+  brand         String
+  model         String
+  version       String
+  color         String
+  vin           String      @unique
+  internalId    String      @unique
+  mileage       Int
+  licensePlate  String      @unique
+  fees          Float
+  price         Int
+  purchasePrice Int
+  img           String?
+  isRental      Boolean     @default(false)
+  options       VehicleOption[]
+  condition     Condition
+  available     Boolean     @default(true)
+  addedAt       DateTime    @default(now())
 
-  transactions Transactions[]
+  transactions  Transactions[]
 }
 
 enum Condition {
@@ -118,4 +126,11 @@ enum Gender {
   male
   female
   other
+}
+
+model VehicleOption {
+  id          Int      @id @default(autoincrement())
+  name        String
+  vehicleId   Int
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
 }

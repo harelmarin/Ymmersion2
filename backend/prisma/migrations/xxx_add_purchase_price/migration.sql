@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Vehicle` ADD COLUMN `purchasePrice` INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE `Vehicle` ADD COLUMN `img` VARCHAR(255) NULL;

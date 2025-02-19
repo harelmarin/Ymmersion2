@@ -1,14 +1,22 @@
 export type Condition = 'new' | 'used';
 
 export type VehicleData = {
-  id: string;
+  id?: number;
   brand: string;
   model: string;
-  year: number;
+  version: string;
+  color: string;
+  vin: string;
+  internalId: string;
   mileage: number;
+  licensePlate: string;
+  fees: number;
   price: number;
-  purchasePrice: number,
-  condition: Condition;
+  purchasePrice: number;
+  img: string;
+  isRental: boolean;
+  options: string[];
+  condition: 'new' | 'used';
   available: boolean;
   addedAt: string;
 };
