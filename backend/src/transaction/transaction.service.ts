@@ -18,7 +18,11 @@ export class TransactionService {
   }
 
   async GetAllTransaction(): Promise<Transaction[] | null> {
-    const transactions = await this.prisma.transactions.findMany()
+    const transactions = await this.prisma.transactions.findMany({
+      include: { user: true, vehicle: true }
+    })
+
+    console.log(transactions)
 
     if (transactions.length === 0) {
       throw new NotFoundException('No users found');

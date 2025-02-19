@@ -25,6 +25,16 @@ export type Transaction = {
     phone?: string;
     role: "employee" | "admin";
   };
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber?: string;
+    address?: string;
+    dateOfBirth?: string | null;
+    gender?: "male" | "female" | "other" | null;
+  };
   invoice?: {
     id: number;
     transactionId: number;

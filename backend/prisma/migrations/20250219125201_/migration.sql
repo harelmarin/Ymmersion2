@@ -5,6 +5,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
+    `profile_pic` VARCHAR(191) NULL,
     `password` VARCHAR(191) NULL,
     `role` ENUM('employee', 'admin') NOT NULL DEFAULT 'employee',
     `active` BOOLEAN NOT NULL DEFAULT true,
@@ -20,13 +21,24 @@ CREATE TABLE `Vehicle` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `brand` VARCHAR(191) NOT NULL,
     `model` VARCHAR(191) NOT NULL,
-    `year` INTEGER NOT NULL,
+    `version` VARCHAR(191) NOT NULL,
+    `color` VARCHAR(191) NOT NULL,
+    `vin` VARCHAR(191) NOT NULL,
+    `internalId` VARCHAR(191) NOT NULL,
     `mileage` INTEGER NOT NULL,
-    `price` DECIMAL(65, 30) NOT NULL,
+    `licensePlate` VARCHAR(191) NOT NULL,
+    `fees` DOUBLE NOT NULL,
+    `price` INTEGER NOT NULL,
+    `purchasePrice` INTEGER NOT NULL,
+    `img` VARCHAR(191) NULL,
+    `isRental` BOOLEAN NOT NULL DEFAULT false,
     `condition` ENUM('new', 'used') NOT NULL,
     `available` BOOLEAN NOT NULL DEFAULT true,
     `addedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `Vehicle_vin_key`(`vin`),
+    UNIQUE INDEX `Vehicle_internalId_key`(`internalId`),
+    UNIQUE INDEX `Vehicle_licensePlate_key`(`licensePlate`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -96,6 +108,15 @@ CREATE TABLE `ClientProfile` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `VehicleOption` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `vehicleId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `ClientProfile`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -110,3 +131,6 @@ ALTER TABLE `Invoice` ADD CONSTRAINT `Invoice_transactionId_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `Logs` ADD CONSTRAINT `Logs_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `VehicleOption` ADD CONSTRAINT `VehicleOption_vehicleId_fkey` FOREIGN KEY (`vehicleId`) REFERENCES `Vehicle`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

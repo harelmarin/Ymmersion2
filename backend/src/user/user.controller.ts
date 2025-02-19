@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe, 
+  ParseIntPipe,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
@@ -20,7 +20,7 @@ import { extname } from "path";
 @ApiTags('users')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   @ApiOperation({ summary: 'Récupérer tous les utilisateurs' })
@@ -56,7 +56,7 @@ export class UserController {
       throw new Error("File is not uploaded.");
     }
     return this.userService.updateProfilePic(id, file.filename);
-}
+  }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Mettre à jour un utilisateur par ID' })
