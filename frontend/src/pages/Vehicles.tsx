@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar';
 import {
   fetchAllVehicle,
   CreateVehicle,
-  updateVehicle,
   DeleteVehicle,
 } from '../services/vehicleService';
 import AddVehiclesForm from '../components/form/AddVehiclesForm';
@@ -14,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 const Vehicles = () => {
   const { data: vehicles, isLoading, refetch } = fetchAllVehicle();
   const createVehicleMutation = CreateVehicle();
-  const updateVehicleMutation = updateVehicle();
   const deleteVehicleMutation = DeleteVehicle();
   const [searchTerm, setSearchTerm] = useState('');
   const [brandFilter, setBrandFilter] = useState('');
@@ -82,7 +80,8 @@ const Vehicles = () => {
             return b.mileage - a.mileage;
           case 'newest':
             return (
-              new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime()
+              new Date(b.addedAt || 0).getTime() -
+              new Date(a.addedAt || 0).getTime()
             );
           default:
             return 0;
@@ -116,15 +115,6 @@ const Vehicles = () => {
       refetch();
     } catch (error) {
       console.error("Erreur lors de l'ajout du véhicule:", error);
-    }
-  };
-
-  const handleEditVehicle = async (updatedVehicle: VehicleData) => {
-    try {
-      await updateVehicleMutation.mutateAsync(updatedVehicle);
-      refetch();
-    } catch (error) {
-      console.error('Erreur lors de la modification du véhicule:', error);
     }
   };
 
@@ -337,7 +327,6 @@ const Vehicles = () => {
                   <VehicleCard
                     key={vehicle.id}
                     vehicle={vehicle}
-                    onEdit={handleEditVehicle}
                     onDelete={handledeleteVehicle}
                   />
                 ))}

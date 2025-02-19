@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { VehicleData } from '../../types/vehicleData';
+
 interface AddVehiclesFormProps {
   onSubmit: (data: VehicleData) => Promise<void>;
   onCancel: () => void;
@@ -26,7 +27,6 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
     options: [],
     condition: 'used',
     available: true,
-    addedAt: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,9 +34,26 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await onSubmit(formData);
+      const { id, addedAt, ...rest } = formData;
+
+      const dataToSubmit = {
+        ...rest,
+        price: Number(formData.price),
+        mileage: Number(formData.mileage),
+        fees: Number(formData.fees),
+        purchasePrice: Number(formData.purchasePrice),
+        options: formData.options.map((option) => ({
+          name: typeof option === 'string' ? option : option.name,
+        })),
+      };
+
+      console.log(
+        'Données exactes envoyées au serveur:',
+        JSON.stringify(dataToSubmit, null, 2),
+      );
+      await onSubmit(dataToSubmit);
     } catch (error) {
-      console.error('Erreur lors de la soumission:', error);
+      console.error('Erreur détaillée:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -45,13 +62,11 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === 'year' || name === 'mileage' || name === 'price'
-          ? parseInt(value, 10)
-          : value,
+        type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -236,9 +251,7 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
             type="checkbox"
             name="isRental"
             checked={formData.isRental}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, isRental: e.target.checked }))
-            }
+            onChange={handleChange}
             className="mt-2"
           />
         </div>
@@ -252,10 +265,10 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
               <div key={index} className="flex items-center gap-2">
                 <input
                   type="text"
-                  value={option}
+                  value={typeof option === 'string' ? option : option.name}
                   onChange={(e) => {
                     const newOptions = [...formData.options];
-                    newOptions[index] = e.target.value;
+                    newOptions[index] = { name: e.target.value };
                     setFormData((prev) => ({ ...prev, options: newOptions }));
                   }}
                   className="px-2 py-1 border rounded"
@@ -279,7 +292,7 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
               onClick={() => {
                 setFormData((prev) => ({
                   ...prev,
-                  options: [...prev.options, ''],
+                  options: [...prev.options, { name: '' }],
                 }));
               }}
               className="px-2 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
@@ -295,14 +308,16 @@ const AddVehiclesForm: React.FC<AddVehiclesFormProps> = ({
           type="button"
           onClick={onCancel}
           className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+          disabled={isSubmitting}
         >
           Annuler
         </button>
         <button
           type="submit"
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          disabled={isSubmitting}
         >
-          Ajouter le véhicule
+          {isSubmitting ? 'Ajout en cours...' : 'Ajouter le véhicule'}
         </button>
       </div>
     </form>

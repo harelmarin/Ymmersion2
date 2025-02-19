@@ -1,6 +1,7 @@
 import { apiClient } from './api/apiClient';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { VehicleData } from '../types/vehicleData';
+import { VehicleOption } from '../types/vehicleData';
 
 export const VehicleService = {
   getAllVehicle: async (): Promise<VehicleData[]> => {
@@ -12,9 +13,20 @@ export const VehicleService = {
   },
 
   createVehicle: async (vehicle: VehicleData): Promise<VehicleData> => {
+    const { options, ...rest } = vehicle;
+
+    const formattedVehicle = {
+      ...rest,
+      price: Number(vehicle.price),
+      mileage: Number(vehicle.mileage),
+      fees: Number(vehicle.fees),
+      purchasePrice: Number(vehicle.purchasePrice),
+      options: options.map((opt) => opt.name),
+    };
+
     return apiClient<VehicleData>('/vehicle', {
       method: 'POST',
-      body: vehicle,
+      body: formattedVehicle,
     });
   },
 
@@ -22,15 +34,16 @@ export const VehicleService = {
     id: string,
     vehicle: VehicleData,
   ): Promise<VehicleData> => {
-    const formattedVehicle = {
-      ...vehicle,
-      mileage: parseInt(vehicle.mileage.toString().replace(/\s/g, '')),
-    };
+    const { options, ...rest } = vehicle;
 
-    console.log('Données formatées:', {
-      original: vehicle.mileage,
-      formatted: formattedVehicle.mileage,
-    });
+    const formattedVehicle = {
+      ...rest,
+      price: Number(vehicle.price),
+      mileage: Number(vehicle.mileage),
+      fees: Number(vehicle.fees),
+      purchasePrice: Number(vehicle.purchasePrice),
+      options: options.map((opt) => opt.name),
+    };
 
     return apiClient<VehicleData>(`/vehicle/${id}`, {
       method: 'PATCH',
@@ -60,12 +73,12 @@ export const VehicleService = {
     return apiClient<VehicleData[]>('/vehicle/last-added');
   },
 
-  getAllVehicleOptions: async (): Promise<VehicleData[]> => {
-    return apiClient<VehicleData[]>('/vehicle/vehicle-options');
+  getAllVehicleOptions: async (): Promise<VehicleOption[]> => {
+    return apiClient<VehicleOption[]>('/vehicle/vehicle-options');
   },
 
-  getVehicleOptions: async (vehicleId: string): Promise<any[]> => {
-    return apiClient<any[]>(`/vehicle/vehicle-options/${vehicleId}`);
+  getVehicleOptions: async (vehicleId: string): Promise<VehicleOption[]> => {
+    return apiClient<VehicleOption[]>(`/vehicle/vehicle-options/${vehicleId}`);
   },
 };
 
@@ -98,10 +111,9 @@ export const CreateVehicle = () => {
   });
 };
 
-export const updateVehicle = () => {
+export const updateVehicle = (id: string, data: VehicleData) => {
   return useMutation<VehicleData, Error, VehicleData>({
-    mutationFn: (data: VehicleData) =>
-      VehicleService.updateVehicle(data.id?.toString() || '', data),
+    mutationFn: (data: VehicleData) => VehicleService.updateVehicle(id, data),
   });
 };
 
@@ -140,14 +152,14 @@ export const GetLastAddedVehicle = () => {
 };
 
 export const getAllVehicleOptions = () => {
-  return useQuery<VehicleData[]>({
+  return useQuery<VehicleOption[]>({
     queryKey: ['vehicleOptions'],
     queryFn: VehicleService.getAllVehicleOptions,
   });
 };
 
 export const getVehicleOptions = (id: string) => {
-  return useQuery<VehicleData[]>({
+  return useQuery<VehicleOption[]>({
     queryKey: ['vehicleOptions', id],
     queryFn: () => VehicleService.getVehicleOptions(id),
   });

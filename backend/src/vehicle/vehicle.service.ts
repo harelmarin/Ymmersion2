@@ -70,6 +70,9 @@ export class VehicleService {
       where: {
         id: id,
       },
+      include: {
+        options: true,
+      },
     });
 
     if (!vehicle) {

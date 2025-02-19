@@ -13,10 +13,9 @@ import { FileUp, FileDown } from 'lucide-react';
 import { exportVehiclesToExcel } from '../utils/exportVehiclesToExcel';
 import { fetchAllVehicle } from '../services/vehicleService';
 
-
 const Home = () => {
   const { data: vehicles } = fetchAllVehicle();
-  
+
   const { data: lastVehicles, refetch: refetchLastVehicles } =
     GetLastAddedVehicle();
   const { data: lastAddedClient, refetch: refetchLastAddedClient } =
@@ -216,28 +215,28 @@ const Home = () => {
                 Exporter rapports
               </button>
             </div>
-          
+
             <h2 className="text-2xl font-semibold text-gray-700 mb-6 mt-6">
               Manipulation de données
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               <button className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer gap-4">
-                < FileDown />
+                <FileDown />
                 Importer données (.xlsx)
               </button>
               <button
-              onClick={() => {
-                if (vehicles) {
-                  exportVehiclesToExcel(vehicles);
-                }
-              }}
-
-              className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer gap-4">
-              < FileUp />
+                onClick={() => {
+                  if (vehicles) {
+                    exportVehiclesToExcel(vehicles);
+                  }
+                }}
+                className="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg transition-colors duration-200  hover:cursor-pointer gap-4"
+              >
+                <FileUp />
                 Exporter données (.xlsx)
               </button>
-            </div>  
+            </div>
           </section>
         </div>
       </div>

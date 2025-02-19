@@ -13,15 +13,16 @@ export type VehicleData = {
   fees: number;
   price: number;
   purchasePrice: number;
-  img: string;
+  img?: string;
   isRental: boolean;
-  options: string[];
-  condition: 'new' | 'used';
+  options: VehicleOption[];
+  condition: Condition;
   available: boolean;
-  addedAt: string;
+  addedAt?: string;
 };
 
 export type VehicleOption = {
-  id: number;
+  id?: number;
   name: string;
+  vehicleId?: number;
 };

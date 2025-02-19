@@ -22,9 +22,26 @@ const EditVehiclesForm: React.FC<EditVehiclesFormProps> = ({
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await onSubmit(formData);
+      const dataToSubmit = {
+        ...formData,
+        price: Number(formData.price),
+        mileage: Number(formData.mileage),
+        fees: Number(formData.fees),
+        purchasePrice: Number(formData.purchasePrice),
+        options: formData.options.map((option) => ({
+          name: option.name,
+        })),
+      };
+
+      // Log détaillé
+      console.log('Données brutes:', formData);
+      console.log('Données formatées:', dataToSubmit);
+      console.log('Options formatées:', dataToSubmit.options);
+
+      await onSubmit(dataToSubmit);
     } catch (error) {
-      console.error('Erreur lors de la soumission:', error);
+      console.error('Erreur complète:', error);
+      console.error('URL appelée:', `/vehicle/${formData.id}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -214,21 +231,28 @@ const EditVehiclesForm: React.FC<EditVehiclesFormProps> = ({
         </div>
 
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Options
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Options du véhicule
           </label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 p-4 border rounded-lg">
             {formData.options.map((option, index) => (
-              <div key={index} className="flex items-center gap-2">
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-white p-2 rounded shadow-sm"
+              >
                 <input
                   type="text"
-                  value={option}
+                  value={option.name}
                   onChange={(e) => {
                     const newOptions = [...formData.options];
-                    newOptions[index] = e.target.value;
+                    newOptions[index] = {
+                      ...newOptions[index],
+                      name: e.target.value,
+                    };
                     setFormData((prev) => ({ ...prev, options: newOptions }));
                   }}
-                  className="px-2 py-1 border rounded"
+                  className="px-2 py-1 border rounded text-sm"
+                  placeholder="Nom de l'option"
                 />
                 <button
                   type="button"
@@ -238,7 +262,7 @@ const EditVehiclesForm: React.FC<EditVehiclesFormProps> = ({
                       options: prev.options.filter((_, i) => i !== index),
                     }));
                   }}
-                  className="text-red-500"
+                  className="text-red-500 hover:text-red-700"
                 >
                   ×
                 </button>
@@ -249,10 +273,13 @@ const EditVehiclesForm: React.FC<EditVehiclesFormProps> = ({
               onClick={() => {
                 setFormData((prev) => ({
                   ...prev,
-                  options: [...prev.options, ''],
+                  options: [
+                    ...prev.options,
+                    { name: '' }, // Simplifié pour correspondre au type attendu
+                  ],
                 }));
               }}
-              className="px-2 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200"
+              className="px-3 py-1 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 text-sm"
             >
               + Ajouter une option
             </button>
