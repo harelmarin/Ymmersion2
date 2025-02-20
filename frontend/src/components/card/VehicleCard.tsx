@@ -59,11 +59,10 @@ const VehicleCard = ({ vehicle, onDelete }) => {
             <div>
               <p className="text-sm text-gray-600">État</p>
               <span
-                className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  vehicle.condition === 'new'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-blue-100 text-blue-800'
-                }`}
+                className={`inline-block px-2 py-1 text-xs rounded-full ${vehicle.condition === 'new'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-blue-100 text-blue-800'
+                  }`}
               >
                 {vehicle.condition === 'new' ? 'Neuf' : 'Occasion'}
               </span>
@@ -71,11 +70,10 @@ const VehicleCard = ({ vehicle, onDelete }) => {
             <div>
               <p className="text-sm text-gray-600">Location</p>
               <span
-                className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  vehicle.isRental
-                    ? 'bg-purple-100 text-purple-800'
-                    : 'bg-gray-100 text-gray-800'
-                }`}
+                className={`inline-block px-2 py-1 text-xs rounded-full ${vehicle.isRental
+                  ? 'bg-purple-100 text-purple-800'
+                  : 'bg-gray-100 text-gray-800'
+                  }`}
               >
                 {vehicle.isRental ? 'Oui' : 'Non'}
               </span>
@@ -106,9 +104,27 @@ const VehicleCard = ({ vehicle, onDelete }) => {
                 {vehicle.fees.toLocaleString()} €
               </p>
             </div>
+
           </div>
 
           <div className="flex justify-end space-x-2 mt-4">
+
+            <div className="flex items-center">
+              <span
+                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-300 ${vehicle.available ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' : 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                  }`}
+              >
+                {vehicle.available ? 'Sur parc' : 'Vendu'}
+
+                {vehicle.available && (
+                  <span className="ml-2 text-xs bg-blue-500 px-2 py-0.5 rounded-full shadow-sm">
+                    {Math.max(1, Math.floor((new Date().getTime() - new Date(vehicle.addedAt).getTime()) / (1000 * 60 * 60 * 24)))} j
+                  </span>
+                )}
+              </span>
+            </div>
+
+
             <button
               onClick={() => onDelete(vehicle.id)}
               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
@@ -127,6 +143,7 @@ const VehicleCard = ({ vehicle, onDelete }) => {
                 />
               </svg>
             </button>
+
           </div>
         </div>
       </div>
