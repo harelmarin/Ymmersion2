@@ -41,10 +41,14 @@ const RecentClient = () => {
                 <p className="font-medium text-gray-800">
                   {client.firstName} {client.lastName}
                 </p>
-                <div className="flex items-center gap-2 text-sm text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <span>{client.email}</span>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <span className="blur-sm hover:blur-none transition-all duration-200">
+                    {client.email}
+                  </span>
                   <span>•</span>
-                  <span>{client.phoneNumber}</span>
+                  <span className="blur-sm hover:blur-none transition-all duration-200">
+                    {client.phoneNumber}
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-2">

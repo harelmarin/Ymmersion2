@@ -136,18 +136,27 @@ const Clients = () => {
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-semibold text-gray-800">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-3">
                           {client.firstName} {client.lastName}
                         </h3>
-                        <div className="mt-2 space-y-1">
-                          <p className="text-gray-600">
-                            Email : {client.email}
+                        <div className="mt-3 space-y-2">
+                          <p className="text-lg">
+                            Email :{' '}
+                            <span className="text-gray-600 blur-sm hover:blur-none transition-all duration-300">
+                              {client.email}
+                            </span>
                           </p>
-                          <p className="text-gray-600">
-                            Téléphone : {client.phoneNumber || 'Non renseigné'}
+                          <p className="text-lg">
+                            Numéro de téléphone :{' '}
+                            <span className="text-gray-600 blur-sm hover:blur-none transition-all duration-300">
+                              {client.phoneNumber || 'Non renseigné'}
+                            </span>
                           </p>
-                          <p className="text-gray-600">
-                            Adresse : {client.address}
+                          <p className="text-lg">
+                            Adresse :{' '}
+                            <span className="text-gray-600 blur-sm hover:blur-none transition-all duration-300">
+                              {client.address}
+                            </span>
                           </p>
                         </div>
                       </div>

@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import Statistics from "../components/common/Statistcs";
-import Navbar from "../components/common/Navbar";
+import React, { useState } from 'react';
+import Statistics from '../components/common/Statistcs';
+import Navbar from '../components/common/Navbar';
 import {
   CreateVehicle,
   GetLastAddedVehicle,
   fetchAllVehicle,
-} from "../services/vehicleService";
-import AddVehiclesForm from "../components/form/AddVehiclesForm";
-import { VehicleData } from "../types/vehicleData";
-import { GetLastAddedClient, CreateClient } from "../services/clientService";
-import AddClientForm from "../components/form/AddClientForm";
-import { ClientData } from "../types/clientData";
-import RecentVehicle from "../components/common/RecentVehicle";
-import RecentTransaction from "../components/common/RecentTransaction";
-import RecentClient from "../components/common/RecentClient"
-import { FileUp, FileDown } from "lucide-react";
-import { exportVehiclesToExcel } from "../utils/exportVehiclesToExcel";
-import { importVehiclesFromExcel } from "../utils/importVehiclesFromExcel";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+} from '../services/vehicleService';
+import AddVehiclesForm from '../components/form/AddVehiclesForm';
+import { VehicleData } from '../types/vehicleData';
+import { GetLastAddedClient, CreateClient } from '../services/clientService';
+import AddClientForm from '../components/form/AddClientForm';
+import { ClientData } from '../types/clientData';
+import RecentVehicle from '../components/common/RecentVehicle';
+import RecentTransaction from '../components/common/RecentTransaction';
+import RecentClient from '../components/common/RecentClient';
+import { FileUp, FileDown } from 'lucide-react';
+import { exportVehiclesToExcel } from '../utils/exportVehiclesToExcel';
+import { importVehiclesFromExcel } from '../utils/importVehiclesFromExcel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
   const { data: vehicles } = fetchAllVehicle();
@@ -44,14 +44,14 @@ const Home = () => {
       } as VehicleData);
       setIsAddModalOpen(false);
       await refetchLastVehicles();
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.error("Erreur lors de l'ajout du véhicule:", error);
     }
   };
 
   const handleImportVehicles = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -68,11 +68,11 @@ const Home = () => {
         } catch (error: any) {
           if (
             error?.response?.data?.message?.includes(
-              "Un véhicule avec ce VIN, matricule ou plaque existe déjà"
+              'Un véhicule avec ce VIN, matricule ou plaque existe déjà',
             )
           ) {
             ignoredCount++;
-            console.warn("Véhicule en double ignoré:", vehicle);
+            console.warn('Véhicule en double ignoré:', vehicle);
             continue;
           }
           throw error;
@@ -84,12 +84,12 @@ const Home = () => {
       if (ignoredCount > 0) {
         message += ` - ${ignoredCount} véhicules ignorés car déjà existants.`;
       }
-      toast.success(message, { position: "bottom-right", autoClose: 5000 });
+      toast.success(message, { position: 'bottom-right', autoClose: 5000 });
       refetchLastVehicles();
     } catch (error) {
       console.error("Erreur lors de l'importation :", error);
       toast.error("Erreur lors de l'importation !", {
-        position: "bottom-right",
+        position: 'bottom-right',
         autoClose: 5000,
       });
     } finally {
@@ -104,7 +104,7 @@ const Home = () => {
         ...clientDataWithoutId,
         createdAt: new Date(),
         updatedAt: new Date(),
-        id: "",
+        id: '',
       });
       setIsAddClientModalOpen(false);
       refetchLastAddedClient();
@@ -195,7 +195,6 @@ const Home = () => {
           </section>
         </div>
       </div>
-      {}
       <ToastContainer />
     </>
   );
