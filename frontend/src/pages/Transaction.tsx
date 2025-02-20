@@ -4,6 +4,7 @@ import { fetchAllClients } from "../services/clientService";
 import { useAuth } from "../features/auth/authContext";
 import { postTransaction } from "../services/transactionService";
 import { fetchVehicle } from "../services/vehicleService";
+import { updateVehiculeAvailability } from "../services/vehicleService";
 
 const Transaction = () => {
   const { vehicleId } = useParams();
@@ -11,6 +12,7 @@ const Transaction = () => {
   const { data: clients } = fetchAllClients();
   const { user } = useAuth();
   const mutation = postTransaction();
+  const mutationUpdateVehicle = updateVehiculeAvailability(vehicleId || '', false);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
 
   const handleTransaction = () => {
@@ -29,10 +31,22 @@ const Transaction = () => {
       transactionDate: new Date().toISOString(),
     };
 
-    console.log(transactionData)
 
     mutation.mutate(transactionData, {
-      onSuccess: () => alert("Transaction envoyée avec succès !"),
+      onSuccess: () => {
+        alert("Transaction effectuée avec succès !");
+        mutationUpdateVehicle.mutate(false, {
+          onSuccess: () => {
+            alert("Véhicule vendu avec succès !");
+          },
+          onError: (error) => {
+            console.error("Erreur de mutation :", error);
+            alert("Erreur : " + error.message);
+          },
+        });
+
+      }
+      ,
       onError: (error) => {
         console.error("Erreur de mutation :", error);
         alert("Erreur : " + error.message);

@@ -1,5 +1,5 @@
 import { apiClient } from './api/apiClient';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, QueryClient } from '@tanstack/react-query';
 import { VehicleData } from '../types/vehicleData';
 import { VehicleOption } from '../types/vehicleData';
 
@@ -80,6 +80,26 @@ export const VehicleService = {
   getVehicleOptions: async (vehicleId: string): Promise<VehicleOption[]> => {
     return apiClient<VehicleOption[]>(`/vehicle/vehicle-options/${vehicleId}`);
   },
+
+  updateVehiculeAvailability: async (
+    id: string,
+    availability: boolean,
+  ): Promise<VehicleData> => {
+    return apiClient<VehicleData>(`/vehicle/${id}`, {
+      method: 'PATCH',
+      body: { available: availability },
+    });
+  }
+};
+
+export const updateVehiculeAvailability = (id: string, availability: boolean) => {
+  const queryClient = new QueryClient();
+  return useMutation<VehicleData, Error, boolean>({
+    mutationFn: (availability: boolean) => VehicleService.updateVehiculeAvailability(id, availability),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vehicle'] });
+    },
+  });
 };
 
 export const fetchAllVehicle = () => {

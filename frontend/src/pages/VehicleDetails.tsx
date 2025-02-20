@@ -119,11 +119,10 @@ const VehicleDetails = () => {
                           {vehicle.price.toLocaleString()} €
                         </p>
                         <span
-                          className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
-                            vehicle.available
+                          className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${vehicle.available
                               ? 'bg-green-500 text-white'
                               : 'bg-red-500 text-white'
-                          }`}
+                            }`}
                         >
                           {vehicle.available ? 'Disponible' : 'Non disponible'}
                         </span>
