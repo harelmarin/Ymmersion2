@@ -1,36 +1,47 @@
 import React from 'react';
 import {
-  GetVehicleCount,
-  GetNewVehiclesCount,
-  GetUsedVehiclesCount,
+  GetAvailableVehiclesCount,
+  GetAvailableNewVehiclesCount,
+  GetAvailableUsedVehiclesCount,
+  GetSoldVehiclesCount,
 } from '../../services/vehicleService';
-
 import { GetClientCount } from '../../services/clientService';
 import { fetchStatisticsByMonth } from '../../services/statisticService';
 import { useNavigate } from 'react-router-dom';
 
 const Statistics = () => {
   const navigate = useNavigate();
+
   const {
-    data: vehicleCount,
+    data: availableVehicleCount,
     isLoading: isLoadingVehicleCount,
     error: errorVehicleCount,
-  } = GetVehicleCount();
+  } = GetAvailableVehiclesCount();
+
   const {
     data: newVehiclesCount,
     isLoading: isLoadingNewVehiclesCount,
     error: errorNewVehiclesCount,
-  } = GetNewVehiclesCount();
+  } = GetAvailableNewVehiclesCount();
+
   const {
     data: usedVehiclesCount,
     isLoading: isLoadingUsedVehiclesCount,
     error: errorUsedVehiclesCount,
-  } = GetUsedVehiclesCount();
+  } = GetAvailableUsedVehiclesCount();
+
+  const {
+    data: soldVehiclesCount,
+    isLoading: isLoadingSoldVehiclesCount,
+    error: errorSoldVehiclesCount,
+  } = GetSoldVehiclesCount();
+
   const {
     data: clientCount,
     isLoading: isLoadingClientCount,
     error: errorClientCount,
   } = GetClientCount();
+
   const currentMonth = new Date().getMonth() + 1;
   const currentYear = new Date().getFullYear();
   const {
@@ -43,7 +54,8 @@ const Statistics = () => {
     isLoadingVehicleCount ||
     isLoadingNewVehiclesCount ||
     isLoadingUsedVehiclesCount ||
-    isLoadingClientCount
+    isLoadingClientCount ||
+    isLoadingSoldVehiclesCount
   ) {
     return <div>Chargement...</div>;
   }
@@ -52,7 +64,8 @@ const Statistics = () => {
     errorVehicleCount ||
     errorNewVehiclesCount ||
     errorUsedVehiclesCount ||
-    errorClientCount
+    errorClientCount ||
+    errorSoldVehiclesCount
   ) {
     return <div>Erreur de chargement des données.</div>;
   }
@@ -61,25 +74,33 @@ const Statistics = () => {
     <section className="mb-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div
-          className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow  hover:cursor-pointer"
+          className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow hover:cursor-pointer"
           onClick={() => navigate('/vehicles')}
         >
           <h3 className="text-sm font-medium text-gray-500">
-            Véhicules en stock
+            Véhicules disponibles
           </h3>
-          <p className="text-2xl font-bold text-blue-600">{vehicleCount}</p>
+          <p className="text-2xl font-bold text-blue-600">
+            {availableVehicleCount}
+          </p>
           <p className="text-xs text-gray-500 mt-2">
             {newVehiclesCount} neufs, {usedVehiclesCount} occasions
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow ">
-          <h3 className="text-sm font-medium text-gray-500">Ventes du mois</h3>
-          <p className="text-2xl font-bold text-blue-600">
-            {' '}
-            {statisticCount?.vehiclesSold}
+        <div
+          className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow hover:cursor-pointer"
+          onClick={() => navigate('/vehicles?filter=sold')}
+        >
+          <h3 className="text-sm font-medium text-gray-500">
+            Véhicules vendus
+          </h3>
+          <p className="text-2xl font-bold text-green-600">
+            {soldVehiclesCount}
           </p>
-          <p className="text-xs text-green-500 mt-2">+20% vs mois dernier</p>
+          <p className="text-xs text-gray-500 mt-2">
+            Total des ventes réalisées
+          </p>
         </div>
 
         <div
@@ -92,11 +113,19 @@ const Statistics = () => {
 
         <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
           <h3 className="text-sm font-medium text-gray-500">
-            Chiffre d'affaires du mois
+            Taux de conversion
           </h3>
           <p className="text-2xl font-bold text-blue-600">
-            {statisticCount?.totalSales}€
+            {soldVehiclesCount && availableVehicleCount
+              ? Math.round(
+                  (soldVehiclesCount /
+                    (soldVehiclesCount + availableVehicleCount)) *
+                    100,
+                )
+              : 0}
+            %
           </p>
+          <p className="text-xs text-gray-500 mt-2">Ratio ventes/stock total</p>
         </div>
       </div>
     </section>

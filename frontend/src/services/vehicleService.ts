@@ -81,6 +81,18 @@ export const VehicleService = {
     return apiClient<VehicleOption[]>(`/vehicle/vehicle-options/${vehicleId}`);
   },
 
+  getAvailableVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/available-vehicles-count');
+  },
+
+  getAvailableNewVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/available-new-vehicles-count');
+  },
+
+  getAvailableUsedVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/available-used-vehicles-count');
+  },
+
   updateVehiculeAvailability: async (
     id: string,
     availability: boolean,
@@ -89,13 +101,21 @@ export const VehicleService = {
       method: 'PATCH',
       body: { available: availability },
     });
-  }
+  },
+
+  getSoldVehiclesCount: async (): Promise<number> => {
+    return apiClient<number>('/vehicle/sold-vehicles-count');
+  },
 };
 
-export const updateVehiculeAvailability = (id: string, availability: boolean) => {
+export const updateVehiculeAvailability = (
+  id: string,
+  availability: boolean,
+) => {
   const queryClient = new QueryClient();
   return useMutation<VehicleData, Error, boolean>({
-    mutationFn: (availability: boolean) => VehicleService.updateVehiculeAvailability(id, availability),
+    mutationFn: (availability: boolean) =>
+      VehicleService.updateVehiculeAvailability(id, availability),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['vehicle'] });
     },
@@ -182,5 +202,32 @@ export const getVehicleOptions = (id: string) => {
   return useQuery<VehicleOption[]>({
     queryKey: ['vehicleOptions', id],
     queryFn: () => VehicleService.getVehicleOptions(id),
+  });
+};
+export const GetSoldVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['soldVehiclesCount'],
+    queryFn: VehicleService.getSoldVehiclesCount,
+  });
+};
+
+export const GetAvailableVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['availableVehiclesCount'],
+    queryFn: VehicleService.getAvailableVehiclesCount,
+  });
+};
+
+export const GetAvailableNewVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['availableNewVehiclesCount'],
+    queryFn: VehicleService.getAvailableNewVehiclesCount,
+  });
+};
+
+export const GetAvailableUsedVehiclesCount = () => {
+  return useQuery<number>({
+    queryKey: ['availableUsedVehiclesCount'],
+    queryFn: VehicleService.getAvailableUsedVehiclesCount,
   });
 };

@@ -66,6 +66,34 @@ export class VehicleController {
     return this.vehicleService.findAll();
   }
 
+  @Get('available-vehicles-count')
+  @ApiOperation({ summary: 'Récupérer le nombre de véhicules disponibles' })
+  getAvailableVehiclesCount() {
+    return this.vehicleService.getAvailableVehiclesCount();
+  }
+
+  @Get('available-new-vehicles-count')
+  @ApiOperation({
+    summary: 'Récupérer le nombre de véhicules disponibles neufs',
+  })
+  getAvailableNewVehiclesCount() {
+    return this.vehicleService.getAvailableNewVehiclesCount();
+  }
+
+  @Get('available-used-vehicles-count')
+  @ApiOperation({
+    summary: 'Récupérer le nombre de véhicules disponibles occasions',
+  })
+  getAvailableUsedVehiclesCount() {
+    return this.vehicleService.getAvailableUsedVehiclesCount();
+  }
+
+  @Get('sold-vehicles-count')
+  @ApiOperation({ summary: 'Récupérer le nombre de véhicules vendus' })
+  getSoldVehiclesCount() {
+    return this.vehicleService.getSoldVehiclesCount();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Récupérer un véhicule par ID' })
   @ApiParam({ name: 'id', example: 1, description: 'ID du véhicule' })

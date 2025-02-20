@@ -10,7 +10,7 @@ export class VehicleService {
 
   async create(createVehicleDto: CreateVehicleDto) {
     const { options, ...vehicleData } = createVehicleDto;
-  
+
     const validFields = {
       brand: vehicleData.brand,
       model: vehicleData.model,
@@ -28,7 +28,7 @@ export class VehicleService {
       condition: vehicleData.condition,
       available: vehicleData.available,
     };
-  
+
     const duplicate = await this.prismaService.vehicle.findFirst({
       where: {
         OR: [
@@ -38,11 +38,14 @@ export class VehicleService {
         ],
       },
     });
-  
+
     if (duplicate) {
-      return { duplicate: true, message: "Un véhicule avec ce VIN, matricule ou plaque existe déjà" };
+      return {
+        duplicate: true,
+        message: 'Un véhicule avec ce VIN, matricule ou plaque existe déjà',
+      };
     }
-  
+
     try {
       const vehicle = await this.prismaService.vehicle.create({
         data: {
@@ -57,11 +60,12 @@ export class VehicleService {
       });
       return vehicle;
     } catch (error) {
-      console.error("Erreur détaillée:", error);
-      throw new Error(`Erreur lors de la création du véhicule: ${error.message}`);
+      console.error('Erreur détaillée:', error);
+      throw new Error(
+        `Erreur lors de la création du véhicule: ${error.message}`,
+      );
     }
   }
-  
 
   findAll() {
     const vehicles = this.prismaService.vehicle.findMany();
@@ -260,6 +264,64 @@ export class VehicleService {
       return vehicle.options;
     } catch (error) {
       console.error('Error fetching vehicle options:', error);
+      throw error;
+    }
+  }
+
+  async getSoldVehiclesCount() {
+    try {
+      const count = await this.prismaService.vehicle.count({
+        where: {
+          available: false,
+        },
+      });
+      return count;
+    } catch (error) {
+      console.error('Error fetching sold vehicles:', error);
+      throw error;
+    }
+  }
+
+  async getAvailableVehiclesCount() {
+    try {
+      const count = await this.prismaService.vehicle.count({
+        where: {
+          available: true,
+        },
+      });
+      return count;
+    } catch (error) {
+      console.error('Error counting available vehicles:', error);
+      throw error;
+    }
+  }
+
+  async getAvailableNewVehiclesCount() {
+    try {
+      const count = await this.prismaService.vehicle.count({
+        where: {
+          available: true,
+          condition: 'new',
+        },
+      });
+      return count;
+    } catch (error) {
+      console.error('Error counting available new vehicles:', error);
+      throw error;
+    }
+  }
+
+  async getAvailableUsedVehiclesCount() {
+    try {
+      const count = await this.prismaService.vehicle.count({
+        where: {
+          available: true,
+          condition: 'used',
+        },
+      });
+      return count;
+    } catch (error) {
+      console.error('Error counting available used vehicles:', error);
       throw error;
     }
   }
