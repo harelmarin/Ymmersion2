@@ -27,6 +27,7 @@ const RecentVehicle = () => {
             }}
             className="shadow-sm hover:shadow-md transition-all duration-200 p-4 cursor-pointer hover:bg-blue-50"
           >
+            
             <div className="flex justify-between items-center">
               <div>
                 <p className="font-medium text-gray-800">

@@ -12,7 +12,7 @@ import RecentTransaction from '../components/common/RecentTransaction';
 import { FileUp, FileDown } from 'lucide-react';
 import { exportVehiclesToExcel } from '../utils/exportVehiclesToExcel';
 import { fetchAllVehicle } from '../services/vehicleService';
-
+import RecentClient from '../components/common/RecentClient';
 const Home = () => {
   const { data: vehicles } = fetchAllVehicle();
 
@@ -73,40 +73,7 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <RecentTransaction />
               <RecentVehicle />
-              <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl text-gray-600">
-                    Derniers clients inscrits
-                  </h3>
-                  <a
-                    href="/clients"
-                    className="text-sm text-blue-600 hover:text-blue-800 hover:cursor-pointer"
-                  >
-                    Voir tout
-                  </a>
-                </div>
-                <div className="divide-y divide-gray-200">
-                  {lastAddedClient?.map((client) => (
-                    <div key={client.id} className="py-3">
-                      <div className="hover:bg-gray-50 rounded-lg transition-colors p-3">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium">
-                              {client.firstName} {client.lastName}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {client.email} • {client.phoneNumber}
-                            </p>
-                          </div>
-                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                            Nouveau
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <RecentClient />
             </div>
           </section>
 

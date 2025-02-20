@@ -120,10 +120,23 @@ const Vehicles = () => {
 
   const handledeleteVehicle = async (id: string) => {
     try {
-      window.confirm('Voulez-vous vraiment supprimer ce véhicule ?');
+      const confirmation = window.confirm(
+        'Voulez-vous vraiment supprimer ce véhicule ?',
+      );
+      if (!confirmation) return;
+
       await deleteVehicleMutation.mutateAsync(id);
       refetch();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 409) {
+        alert(
+          'Impossible de supprimer ce véhicule car il est lié à une ou plusieurs transactions.',
+        );
+      } else {
+        alert(
+          'Impossible de supprimer ce véhicule car il est lié à une ou plusieurs transactions.',
+        );
+      }
       console.error('Erreur lors de la suppression du véhicule:', error);
     }
   };
