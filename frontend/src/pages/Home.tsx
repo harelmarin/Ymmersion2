@@ -162,12 +162,6 @@ const Home = () => {
               >
                 Ajouter véhicule
               </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg">
-                Créer facture
-              </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg">
-                Exporter rapports
-              </button>
             </div>
 
             <h2 className="text-2xl font-semibold text-gray-700 mb-6 mt-6">
