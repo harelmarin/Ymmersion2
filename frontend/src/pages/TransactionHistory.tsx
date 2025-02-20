@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/common/Navbar';
 import React from 'react';
 import { fetchTransactionById } from '../services/transactionService';
@@ -6,6 +6,7 @@ import { fetchTransactionById } from '../services/transactionService';
 const TransactionHistory = () => {
   const { id } = useParams();
   const { data: transactions } = id ? fetchTransactionById(id) : { data: null };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -20,7 +21,10 @@ const TransactionHistory = () => {
             {transactions?.map((transaction) => (
               <div
                 key={transaction.id}
-                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
+                onClick={() =>
+                  navigate(`/transaction/${transaction.id}/details`)
+                }
+                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200 cursor-pointer"
               >
                 <div className="space-y-4">
                   <div className="flex justify-between items-start">
@@ -79,7 +83,7 @@ const TransactionHistory = () => {
                         </div>
                         <div>
                           <p className="text-gray-600">Email</p>
-                          <p className="font-medium">
+                          <p className="font-medium blur-sm hover:blur-none transition-all duration-200">
                             {transaction.employee.email}
                           </p>
                         </div>

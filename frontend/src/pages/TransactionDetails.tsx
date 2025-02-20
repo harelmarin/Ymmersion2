@@ -117,6 +117,17 @@ const TransactionDetails = () => {
                   <p>
                     {transaction.user.firstName} {transaction.user.lastName}
                   </p>
+                  <div className="space-y-1">
+                    <p className="blur-sm hover:blur-none transition-all duration-200">
+                      {transaction.user.email}
+                    </p>
+                    <p className="blur-sm hover:blur-none transition-all duration-200">
+                      {transaction.user.phoneNumber}
+                    </p>
+                    <p className="blur-sm hover:blur-none transition-all duration-200">
+                      {transaction.user.address}
+                    </p>
+                  </div>
                 </div>
               )}
 

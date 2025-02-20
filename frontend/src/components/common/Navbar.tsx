@@ -78,8 +78,11 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <a href="/dashboard" className="text-gray-600 hover:text-gray-800">
-              Dashboard
+            <a
+              href="/transactions"
+              className="text-gray-600 hover:text-gray-800"
+            >
+              Transactions
             </a>
             <a href="/clients" className="text-gray-600 hover:text-gray-800">
               Clients
