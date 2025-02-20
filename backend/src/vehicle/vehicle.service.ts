@@ -10,7 +10,7 @@ export class VehicleService {
 
   async create(createVehicleDto: CreateVehicleDto) {
     const { options, ...vehicleData } = createVehicleDto;
-
+  
     const validFields = {
       brand: vehicleData.brand,
       model: vehicleData.model,
@@ -28,7 +28,21 @@ export class VehicleService {
       condition: vehicleData.condition,
       available: vehicleData.available,
     };
-
+  
+    const duplicate = await this.prismaService.vehicle.findFirst({
+      where: {
+        OR: [
+          { vin: validFields.vin },
+          { licensePlate: validFields.licensePlate },
+          { internalId: validFields.internalId },
+        ],
+      },
+    });
+  
+    if (duplicate) {
+      return { duplicate: true, message: "Un véhicule avec ce VIN, matricule ou plaque existe déjà" };
+    }
+  
     try {
       const vehicle = await this.prismaService.vehicle.create({
         data: {
@@ -43,17 +57,11 @@ export class VehicleService {
       });
       return vehicle;
     } catch (error) {
-      console.error('Erreur détaillée:', error);
-      if (error.code === 'P2002') {
-        throw new Error(
-          'Un véhicule avec ce VIN, matricule ou plaque existe déjà',
-        );
-      }
-      throw new Error(
-        `Erreur lors de la création du véhicule: ${error.message}`,
-      );
+      console.error("Erreur détaillée:", error);
+      throw new Error(`Erreur lors de la création du véhicule: ${error.message}`);
     }
   }
+  
 
   findAll() {
     const vehicles = this.prismaService.vehicle.findMany();
