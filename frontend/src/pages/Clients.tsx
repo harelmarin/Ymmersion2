@@ -174,7 +174,7 @@ const Clients = () => {
                           </svg>
                         </button>
                         <button
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors hover:cursor-pointer"
                           onClick={() => handleDeleteClient(client.id)}
                         >
                           <svg
@@ -193,7 +193,7 @@ const Clients = () => {
                         </button>
 
                         <button
-                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors hover:cursor-pointer"
                           onClick={() =>
                             handleViewTransactionHistory(client.id)
                           }

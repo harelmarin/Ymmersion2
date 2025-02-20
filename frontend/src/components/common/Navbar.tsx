@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useLogout } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../features/auth/authContext';
 import {
   useSearchClients,
   useSearchVehicles,
 } from '../../services/searchService';
 import SearchResults from './SearchResults';
+import { getUserById } from '../../services/userService';
 
 const Navbar = () => {
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [showResults, setShowResults] = useState(false);
+
+  const { user } = useAuth();
+
+  const { data: username } = getUserById(user?.id || '', { enabled: !!user });
 
   const { data: clients } = useSearchClients(searchTerm);
   const { data: vehicles } = useSearchVehicles(searchTerm);
@@ -83,11 +89,8 @@ const Navbar = () => {
             </a>
 
             <div className="relative group">
-              <button className="text-gray-600 hover:text-gray-800 focus:outline-none">
-                Mon compte
-              </button>
-
-              {}
+              <button className="text-gray-600 hover:text-gray-800 focus:outline-none"></button>
+              {username?.name}
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300">
                 <ul className="py-1">
                   <li>

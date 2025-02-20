@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import EditVehiclesForm from '../form/EditVehiclesForm';
-import { VehicleData } from '../../types/vehicleData';
-import { getAllVehicleOptions } from '../../services/vehicleService';
 
 const VehicleCard = ({ vehicle, onDelete }) => {
-  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   const handleCardClick = (e) => {

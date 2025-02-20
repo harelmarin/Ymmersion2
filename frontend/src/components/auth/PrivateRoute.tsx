@@ -14,11 +14,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
     return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? (
-    <>{element}</>
-  ) : (
-    <Navigate to="/login" state={{ from: location }} />
-  );
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  }
+
+  return <>{element}</>;
 };
 
 export default PrivateRoute;

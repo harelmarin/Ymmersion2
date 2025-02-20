@@ -120,6 +120,7 @@ const Vehicles = () => {
 
   const handledeleteVehicle = async (id: string) => {
     try {
+      window.confirm('Voulez-vous vraiment supprimer ce véhicule ?');
       await deleteVehicleMutation.mutateAsync(id);
       refetch();
     } catch (error) {

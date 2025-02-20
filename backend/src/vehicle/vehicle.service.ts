@@ -146,6 +146,17 @@ export class VehicleService {
 
   async remove(id: number) {
     try {
+      const existingTransaction =
+        await this.prismaService.transactions.findFirst({
+          where: { vehicleId: id },
+        });
+
+      if (existingTransaction) {
+        throw new Error(
+          'Impossible de supprimer ce véhicule, il est lié à une transaction.',
+        );
+      }
+
       await this.prismaService.vehicleOption.deleteMany({
         where: { vehicleId: id },
       });

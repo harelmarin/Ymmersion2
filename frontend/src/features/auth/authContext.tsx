@@ -7,10 +7,11 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean | null; // null au début, true ou false après le check
+  isAuthenticated: boolean | null;
   login: (userData: User) => void;
   logout: () => void;
-  checkAuth: () => Promise<void>;
+  checkAuth: () => Promise<boolean>;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 
 interface AuthProviderProps {
@@ -21,7 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // Valeur initiale null
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -35,25 +36,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       const data = await response.json();
-      console.log('Auth Check Response:', data); // Vérifie la réponse complète
+      console.log('Auth Check Response:', data);
 
       if (data.status === 'valid') {
-        setUser({ id: data.id, email: '' }); // Tu n'as pas besoin de l'email, mais il faut quand même construire un user.
+        setUser({ id: data.id, email: data.email });
         setIsAuthenticated(true);
+        return true;
       } else {
         setUser(null);
         setIsAuthenticated(false);
+        return false;
       }
     } catch (error) {
       console.error('Error during auth check:', error);
       setUser(null);
       setIsAuthenticated(false);
+      return false;
     }
   };
 
-  const login = (userData: User) => {
+  const login = async (userData: User) => {
     setUser(userData);
     setIsAuthenticated(true);
+    await checkAuth();
   };
 
   const logout = () => {
@@ -66,7 +71,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, checkAuth }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        logout,
+        checkAuth,
+        setIsAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

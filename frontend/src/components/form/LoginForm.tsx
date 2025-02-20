@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoginData } from '../../types/authData';
 import { useLogin } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../features/auth/authContext';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState<LoginData>({
@@ -14,6 +15,13 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const loginMutation = useLogin();
+  const { login } = useAuth();
+
+  useEffect(() => {
+    if (loginMutation.isSuccess) {
+      navigate('/', { replace: true });
+    }
+  }, [loginMutation.isSuccess, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -38,11 +46,15 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setServerError('');
+
     if (validateForm()) {
       try {
-        await loginMutation.mutateAsync(formData);
-        navigate('/');
+        const response = await loginMutation.mutateAsync(formData);
+        await login(response.user);
+        navigate('/', { replace: true });
       } catch (error) {
+        console.error('Erreur de connexion:', error);
         setServerError(
           error instanceof Error ? error.message : 'Une erreur est survenue',
         );

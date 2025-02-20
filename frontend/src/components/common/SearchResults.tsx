@@ -28,7 +28,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   const navigate = useNavigate();
 
   const handleViewTransactionHistory = async (id: string) => {
-    navigate(`/transaction/user/${id}`);
+    await navigate(`/transaction/user/${id}`);
+    window.location.reload();
   };
 
   if (!searchTerm) return null;
@@ -84,8 +85,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             {vehicles.map((vehicle) => (
               <div
                 key={vehicle.id}
-                onClick={() => {
-                  navigate(`/vehicles/${vehicle.id}`);
+                onClick={async () => {
+                  await navigate(`/vehicles/${vehicle.id}`);
+                  window.location.reload();
                   onClose();
                 }}
                 className="flex items-center justify-between p-2 hover:bg-blue-50 rounded-lg cursor-pointer"

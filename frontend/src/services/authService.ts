@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { LoginData, RegisterData } from '../types/authData';
 
 const BASE_URL = 'http://localhost:3000/auth';
@@ -62,8 +62,15 @@ const AuthService = {
 };
 
 export const useLogin = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: LoginData) => AuthService.login(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['user'] });
+      // Attendre que les données soient revalidées
+      await queryClient.refetchQueries({ queryKey: ['user'] });
+    },
   });
 };
 
@@ -80,8 +87,10 @@ export const useLogout = () => {
 };
 
 export const useMe = () => {
-  return useMutation({
-    mutationFn: () => AuthService.me(),
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: () => AuthService.me(),
+    retry: false,
   });
 };
 
