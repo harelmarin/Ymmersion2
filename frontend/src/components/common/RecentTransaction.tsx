@@ -7,7 +7,7 @@ const RecentTransaction = () => {
   const navigate = useNavigate();
 
   const handleTransactionClick = (transactionId: string) => {
-    navigate(`/transaction/${transactionId}`, {
+    navigate(`/transaction/${transactionId}/details`, {
       state: {
         timestamp: new Date().getTime(),
       },
@@ -15,12 +15,16 @@ const RecentTransaction = () => {
     });
   };
 
+  const handleAllTransactionClick = () => {
+    navigate('/transactions');
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl text-gray-600">Dernières transactions</h3>
         <a
-          href="/transaction"
+          onClick={handleAllTransactionClick}
           className="text-sm text-blue-600 hover:text-blue-800 hover:cursor-pointer"
         >
           Voir tout

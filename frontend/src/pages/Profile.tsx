@@ -131,7 +131,7 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-100 flex items-center justify-center py-10 mt-16">
+      <div className="flex items-center justify-center py-10 mt-16">
         <div className="w-full max-w-4xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
           <div className="flex flex-col md:flex-row">
             <div className="relative md:w-1/3 bg-gray-300 flex items-center justify-center p-6">

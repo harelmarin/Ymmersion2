@@ -1,12 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Put,
+} from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Controller('transaction')
 export class TransactionController {
-  constructor(private readonly transactionService: TransactionService) { }
-
+  constructor(private readonly transactionService: TransactionService) {}
 
   @Get()
   async getAllTransaction() {
@@ -15,11 +24,13 @@ export class TransactionController {
 
   @Get(':id')
   async getTransactionById(@Param('id', ParseIntPipe) id: number) {
-    return await this.transactionService.getTransactionById(id)
+    return await this.transactionService.getTransactionById(id);
   }
 
   @Get('user/:userId')
-  async getAllTransactionFromUser(@Param('userId', ParseIntPipe) userId: number) {
+  async getAllTransactionFromUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
     return await this.transactionService.getAllTransactionFromUser(userId);
   }
 
@@ -30,11 +41,19 @@ export class TransactionController {
 
   @Delete(':id')
   async deleteTransaction(@Param('id', ParseIntPipe) id: number) {
-    return await this.deleteTransaction(id)
+    return await this.deleteTransaction(id);
   }
 
   @Patch(':id')
-  async updateTransaction(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateTransactionDto) {
-    return await this.updateTransaction(id, data)
+  async updateTransaction(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateTransactionDto,
+  ) {
+    return await this.updateTransaction(id, data);
+  }
+
+  @Get(':id/details')
+  async getTransactionDetails(@Param('id', ParseIntPipe) id: number) {
+    return await this.transactionService.getTransactionDetails(id);
   }
 }

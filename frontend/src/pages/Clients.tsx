@@ -128,11 +128,12 @@ const Clients = () => {
             {isLoading ? (
               <div className="text-center py-10">Chargement...</div>
             ) : (
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-4 ">
                 {filteredClients.map((client) => (
                   <div
                     key={client.id}
-                    className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                    className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow hover:cursor-pointer"
+                    onClick={() => handleViewTransactionHistory(client.id)}
                   >
                     <div className="flex justify-between items-start">
                       <div>

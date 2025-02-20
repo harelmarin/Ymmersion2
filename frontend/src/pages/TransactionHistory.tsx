@@ -5,119 +5,156 @@ import { fetchTransactionById } from '../services/transactionService';
 
 const TransactionHistory = () => {
   const { id } = useParams();
-  const { data } = id ? fetchTransactionById(id) : { data: null };
-  console.log(data);
+  const { data: transactions } = id ? fetchTransactionById(id) : { data: null };
 
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="container mx-auto px-4 py-8 mt-16">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
-          Transaction History{' '}
-        </h1>
-        {data?.map((transaction, index) => (
-          <div
-            key={transaction.id}
-            className="bg-white rounded-lg shadow-lg p-6 mb-8 border-2 border-gray-200 hover:border-blue-500 transition-all duration-300"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-sm text-gray-500">
-                Transaction #{index + 1}
-              </span>
-              <span className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600">
-                {new Date(transaction.transactionDate).toLocaleDateString()}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">
-                    Transaction Number:
-                  </span>{' '}
-                  {transaction.id}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Amount:</span>{' '}
-                  {transaction.amount}€
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">
-                    Transaction Type:
-                  </span>{' '}
-                  {transaction.transactionType}
-                </p>
-              </div>
-            </div>
+      <div className="w-full min-h-screen p-5 bg-gray-100 mt-10">
+        <div className="w-[75%] mx-auto max-w-7xl">
+          <h1 className="text-2xl font-semibold text-gray-700 mb-6">
+            Historique des transactions
+          </h1>
 
-            <div className="border-t pt-4 mb-6">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                Employee Details
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Name:</span>{' '}
-                  {transaction.employee.name}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Email:</span>{' '}
-                  {transaction.employee.email}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Role:</span>{' '}
-                  {transaction.employee.role}
-                </p>
-              </div>
-            </div>
+          <div className="grid gap-4">
+            {transactions?.map((transaction) => (
+              <div
+                key={transaction.id}
+                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
+              >
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <p className="text-lg font-semibold text-gray-700">
+                          Transaction #{transaction.id}
+                        </p>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            transaction.transactionType === 'purchase'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
+                          {transaction.transactionType === 'purchase'
+                            ? 'Achat'
+                            : 'Vente'}
+                        </span>
+                      </div>
+                      <p className="text-gray-600">
+                        Date:{' '}
+                        {new Date(
+                          transaction.transactionDate,
+                        ).toLocaleDateString('fr-FR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
+                    </div>
+                    <p
+                      className={`text-xl font-bold ${
+                        transaction.transactionType === 'purchase'
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
+                      {transaction.amount.toLocaleString('fr-FR')} €
+                    </p>
+                  </div>
 
-            <div className="border-t pt-4">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                Vehicle Details
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Brand:</span>{' '}
-                  {transaction.vehicle.brand}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Model:</span>{' '}
-                  {transaction.vehicle.model}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Year:</span>{' '}
-                  {transaction.vehicle.year}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">
-                    Condition:
-                  </span>{' '}
-                  {transaction.vehicle.condition}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Mileage:</span>{' '}
-                  {transaction.vehicle.mileage}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">Price:</span>{' '}
-                  {transaction.vehicle.price}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">
-                    Purchase Price:
-                  </span>{' '}
-                  {transaction.vehicle.purchasePrice}
-                </p>
-                <p className="mb-2">
-                  <span className="font-semibold text-gray-700">
-                    Available:
-                  </span>{' '}
-                  {transaction.vehicle.available ? 'Yes' : 'No'}
-                </p>
+                  {transaction.employee && (
+                    <div className="border-t pt-4">
+                      <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                        Informations employé
+                      </h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-gray-600">Nom</p>
+                          <p className="font-medium">
+                            {transaction.employee.name}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Email</p>
+                          <p className="font-medium">
+                            {transaction.employee.email}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Rôle</p>
+                          <p className="font-medium">
+                            {transaction.employee.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {transaction.vehicle && (
+                    <div className="border-t pt-4">
+                      <h3 className="text-lg font-semibold text-gray-700 mb-3">
+                        Informations véhicule
+                      </h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-gray-600">Marque</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.brand}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Modèle</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.model}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Année</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.year}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">État</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.condition}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Kilométrage</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.mileage.toLocaleString(
+                              'fr-FR',
+                            )}{' '}
+                            km
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-gray-600">Prix</p>
+                          <p className="font-medium">
+                            {transaction.vehicle.price.toLocaleString('fr-FR')}{' '}
+                            €
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+
+          {!transactions?.length && (
+            <div className="text-center text-gray-500 p-4 bg-white rounded-lg shadow-sm">
+              Aucune transaction trouvée
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

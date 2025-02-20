@@ -6,13 +6,13 @@ import Vehicles from '../pages/Vehicles';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Clients from '../pages/Clients';
-import Dashboard from '../pages/Dashboard';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import Profile from '../pages/Profile';
 import TransactionHistory from '../pages/TransactionHistory';
 import VehicleDetails from '../pages/VehicleDetails';
 import Transaction from '../pages/Transaction';
-
+import AllTransactions from '../pages/AllTransactions';
+import TransactionDetails from '../pages/TransactionDetails';
 const AppRoutes = () => {
   return (
     <Router>
@@ -29,10 +29,6 @@ const AppRoutes = () => {
           element={<PrivateRoute element={<Clients />} />}
         />
         <Route
-          path="/dashboard"
-          element={<PrivateRoute element={<Dashboard />} />}
-        />
-        <Route
           path="/transaction/user/:id"
           element={<PrivateRoute element={<TransactionHistory />} />}
         />
@@ -47,6 +43,14 @@ const AppRoutes = () => {
         <Route
           path="/vehicles/:id"
           element={<PrivateRoute element={<VehicleDetails />} />}
+        />
+        <Route
+          path="/transactions"
+          element={<PrivateRoute element={<AllTransactions />} />}
+        />
+        <Route
+          path="/transaction/:id/details"
+          element={<PrivateRoute element={<TransactionDetails />} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
