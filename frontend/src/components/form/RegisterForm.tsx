@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RegisterData, RegisterFormData } from '../../types/authData';
+import { RegisterFormData } from '../../types/authData';
 import { useRegister } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 
