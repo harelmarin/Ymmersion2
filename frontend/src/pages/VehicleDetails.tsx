@@ -29,7 +29,7 @@ const VehicleDetails = () => {
     return (
       <div className="min-h-screen bg-gray-100">
         <Navbar />
-        <div className="container mx-auto px-4 py-8 mt-16">
+        <div className="container mx-auto px-4 py-8 mt-4">
           <div className="bg-white rounded-lg shadow-xl p-6">
             <p className="text-center text-gray-600">Chargement...</p>
           </div>
@@ -97,42 +97,30 @@ const VehicleDetails = () => {
             </div>
           ) : (
             <>
-              <div className="relative h-[400px]">
-                <img
-                  src={vehicle.img || 'https://via.placeholder.com/800x400'}
-                  alt={`${vehicle.brand} ${vehicle.model}`}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <h1 className="text-4xl font-bold text-white mb-2">
-                          {vehicle.brand} {vehicle.model}
-                        </h1>
-                        <p className="text-xl text-white/90">
-                          {vehicle.version}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-3xl font-bold text-white mb-2">
-                          {vehicle.price.toLocaleString()} €
-                        </p>
-                        <span
-                          className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${vehicle.available
-                              ? 'bg-green-500 text-white'
-                              : 'bg-red-500 text-white'
-                            }`}
-                        >
-                          {vehicle.available ? 'Disponible' : 'Non disponible'}
-                        </span>
-                      </div>
-                    </div>
+              <div className="p-8">
+                <div className="flex justify-between items-end mb-6">
+                  <div>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-2">
+                      {vehicle.brand} {vehicle.model}
+                    </h1>
+                    <p className="text-xl text-gray-600">{vehicle.version}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-3xl font-bold text-gray-800 mb-2">
+                      {vehicle.price.toLocaleString()} €
+                    </p>
+                    <span
+                      className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
+                        vehicle.available
+                          ? 'bg-green-500 text-white'
+                          : 'bg-red-500 text-white'
+                      }`}
+                    >
+                      {vehicle.available ? 'Disponible' : 'Non disponible'}
+                    </span>
                   </div>
                 </div>
-              </div>
 
-              <div className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   <div className="space-y-6">
                     <h2 className="text-2xl font-bold text-gray-800 border-b pb-2">
