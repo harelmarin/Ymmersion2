@@ -290,13 +290,6 @@ const Profile = () => {
                   </button>
                 </div>
               )}
-
-              <div className="mt-6">
-                <button className="px-4 py-2 bg-blue-400 text-white rounded-2xl hover:bg-blue-600 transition flex items-center gap-2">
-                  <KeyRound />
-                  Modifier mon mot de passe
-                </button>
-              </div>
             </div>
           </div>
         </div>

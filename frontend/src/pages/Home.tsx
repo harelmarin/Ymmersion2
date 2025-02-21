@@ -19,6 +19,7 @@ import { exportVehiclesToExcel } from '../utils/exportVehiclesToExcel';
 import { importVehiclesFromExcel } from '../utils/importVehiclesFromExcel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const { data: vehicles } = fetchAllVehicle();
@@ -113,6 +114,8 @@ const Home = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
@@ -161,6 +164,12 @@ const Home = () => {
                 className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg"
               >
                 Ajouter véhicule
+              </button>
+              <button
+                onClick={() => navigate('/register')}
+                className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg"
+              >
+                Ajouter employé
               </button>
             </div>
 

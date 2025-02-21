@@ -51,7 +51,7 @@ const RegisterForm = () => {
       try {
         const { confirmPassword, ...dataToSend } = formData;
         await registerMutation.mutateAsync(dataToSend);
-        navigate('/index');
+        navigate('/');
       } catch (error) {
         setServerError(
           error instanceof Error ? error.message : 'Une erreur est survenue',
