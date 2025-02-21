@@ -8,7 +8,6 @@ const AllTransactions = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Filtrer les transactions
   const filteredTransactions = transactions?.filter((transaction) => {
     const fullName =
       `${transaction.user?.firstName} ${transaction.user?.lastName}`.toLowerCase();

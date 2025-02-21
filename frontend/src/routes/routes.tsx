@@ -52,6 +52,7 @@ const AppRoutes = () => {
           path="/transaction/:id/details"
           element={<PrivateRoute element={<TransactionDetails />} />}
         />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
