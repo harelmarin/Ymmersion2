@@ -100,6 +100,14 @@ npx prisma studio
 > 1. Créer une nouvelle migration : `npx prisma migrate dev`
 > 2. Régénérer le client : `npx prisma generate`
 
+4. **Ajouter les fakes datas**
+
+- Importer dans phpMyAdmin le fichier /sql/insert_datas.sql pour avoir les insert de datas 
+- Le compte admin : 
+   - email : Admin@example.com
+   - mot de passe : password 
+
+
 ## 📚 Documentation
 
 L'API est documentée avec Swagger et accessible à l'adresse :
